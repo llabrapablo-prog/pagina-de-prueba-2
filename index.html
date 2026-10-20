@@ -194,7 +194,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
           <p>Bienvenidos a Un Desastre Gaming: novedades, consolas retro, pruebas en R36S y clones, gameplays y una comunidad para compartir la pasión por los videojuegos.</p>
           <div class="actions"><a class="btn btn-primary" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Sumate al Discord</a><a class="btn btn-outline" href="#juegos">🎮 Explorar juegos</a></div>
         </div>
-        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-screen"><iframe src="https://www.youtube-nocookie.com/embed/IPBOq2lA5Qg?autoplay=1&amp;mute=1&amp;controls=0&amp;loop=1&amp;playlist=IPBOq2lA5Qg&amp;start=0&amp;end=15&amp;playsinline=1&amp;rel=0" title="Gameplay de Un Desastre Gaming, fragmento de 15 segundos" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="console-note">¡A jugar! 🎮</div></div>
+        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=0&amp;start=0&amp;end=15&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de Un Desastre Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="console-note">¡A jugar! 🎮</div></div>
       </div>
     </section>
     <section class="section" id="juegos">
@@ -312,5 +312,38 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&overlay.classList.contains('open'))dismiss();});
 })();
 </script>
+
+<script>
+(() => {
+  const screen = document.getElementById('gameplay-rotator');
+  if (!screen) return;
+  const shorts = [
+    'jZEHH0i2VqQ',
+    '3pSBb6J_s7k',
+    'CAuxNqfQoBU',
+    '_v69ih1duJA',
+    'q-Oi---gMH0',
+    'VMLnNBFwzus',
+    '1F_pCbtsuVE',
+    'AwrKZ1Wgo2w',
+    'ijvdR4dkQUY',
+    'EvRUf0coR-k',
+    'bjOG8T4Kuwk'
+  ];
+  let current = 0;
+  const showShort = index => {
+    const id = shorts[index];
+    screen.src = 'https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&mute=1&controls=0&start=0&end=15&playsinline=1&rel=0';
+    screen.title = 'Short de gameplay ' + (index + 1) + ' de ' + shorts.length + ' · Un Desastre Gaming';
+  };
+  showShort(current);
+  window.setInterval(() => {
+    current = (current + 1) % shorts.length;
+    showShort(current);
+  }, 15000);
+})();
+</script>
+
 </body>
 </html>
