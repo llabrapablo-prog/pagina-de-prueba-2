@@ -342,7 +342,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
   const showShort = index => {
     const id = shorts[index];
     screen.src = 'https://www.youtube-nocookie.com/embed/' + id +
-      '?autoplay=1&mute=1&controls=1&start=0&end=30&playsinline=1&rel=0';
+      '?autoplay=1&mute=1&controls=1&start=0&end=59&playsinline=1&rel=0';
     screen.title = 'Short de gameplay ' + (index + 1) + ' de ' + shorts.length + ' · Un Desastre Gaming';
     const likeLink = document.getElementById('short-like-link');
     if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
@@ -351,7 +351,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
   window.setInterval(() => {
     current = (current + 1) % shorts.length;
     showShort(current);
-  }, 30000);
+  }, 59000);
 })();
 </script>
 
