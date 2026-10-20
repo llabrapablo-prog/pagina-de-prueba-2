@@ -102,6 +102,22 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .thumb-label { color:white; font-weight:1000; font-size:34px; letter-spacing:-.07em; text-shadow:0 3px 0 #17356c; z-index:1; }
 .thumb-label small { display:block; font-size:11px; letter-spacing:.22em; }
 .game-body { padding:24px; }
+.game-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:26px; }
+.game-list .game-thumb { min-height:175px; padding:20px; }
+.game-list .thumb-label { font-size:25px; }
+.game-list .game-body { padding:20px; }
+.game-list .game-body h3 { font-size:19px; }
+.game-list .game-thumb::before { font-size:66px; right:18px; top:18px; }
+.game-thumb.hollow { background:radial-gradient(circle at 72% 28%,#a9eaff 0 8%,transparent 9%),linear-gradient(145deg,#152e4e,#253b63 55%,#0c1729); }
+.game-thumb.hollow::before { content:"⚔️"; }
+.game-thumb.asphalt { background:radial-gradient(circle at 72% 25%,#ffdc8a 0 7%,transparent 8%),linear-gradient(145deg,#f18b31,#a93640 55%,#222a4b); }
+.game-thumb.asphalt::before { content:"🏎️"; }
+.game-thumb.zelda { background:radial-gradient(circle at 72% 25%,#fff1a8 0 8%,transparent 9%),linear-gradient(145deg,#48b8b1,#247d83 50%,#1a3756); }
+.game-thumb.zelda::before { content:"🗡️"; }
+.demo-note { color:#91a2bf; font-size:12px; line-height:1.6; margin:18px 0 0; }
+@media (max-width:760px) { .game-list { grid-template-columns:1fr 1fr; } }
+@media (max-width:500px) { .game-list { grid-template-columns:1fr; } }
+
 .game-body h3 { margin:0 0 10px; font-size:23px; letter-spacing:-.04em; }
 .game-body p { color:#b1bed4; font-size:14px; line-height:1.7; margin:0 0 18px; }
 .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
@@ -154,6 +170,13 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
             <article class="info-box"><div class="info-icon">🧩</div><h3>Fichas de juegos</h3><p>Una biblioteca ordenada por consola o categoría, con capturas, datos técnicos y enlaces relacionados.</p><a class="text-link" href="#juegos">Explorar la portada ↑</a></article>
           </div>
         </div>
+        <div class="section-head" style="margin-top:48px"><div><div class="kicker">Más ejemplos</div><h2>Así se verían más juegos</h2></div><p>Tarjetas de muestra para probar cómo se ve la portada con una biblioteca más completa.</p></div>
+        <div class="game-list">
+          <article class="game-card"><div class="game-thumb hollow"><div class="thumb-label"><small>TEAM CHERRY</small>HOLLOW KNIGHT</div></div><div class="game-body"><h3>Hollow Knight</h3><p>Aventura de acción y exploración en un reino subterráneo lleno de secretos.</p><div class="chips"><span class="chip">Metroidvania</span><span class="chip">PC y consolas</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb asphalt"><div class="thumb-label"><small>GAMELOFT</small>ASPHALT 5</div></div><div class="game-body"><h3>Asphalt 5</h3><p>Un juego de carreras arcade con autos deportivos y circuitos variados.</p><div class="chips"><span class="chip">Carreras</span><span class="chip">Port de ejemplo</span><span class="chip warn">Compatibilidad según sistema</span></div></div></article>
+          <article class="game-card"><div class="game-thumb zelda"><div class="thumb-label"><small>NINTENDO</small>ZELDA</div></div><div class="game-body"><h3>The Legend of Zelda: The Wind Waker</h3><p>Aventura de exploración por islas y mares, con un estilo visual muy característico.</p><div class="chips"><span class="chip">Aventura</span><span class="chip">GameCube</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+        </div>
+        <p class="demo-note">Estas tarjetas son ejemplos visuales para mostrar el diseño de la biblioteca. No representan enlaces de descarga ni una garantía de compatibilidad con cada consola.</p>
       </div>
     </section>
     <section class="section" id="comunidad" style="padding-top:0">
