@@ -148,6 +148,27 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 .catalog-status { color:#aebbd3; font-size:13px; margin:16px 0 0; }
 .catalog-empty { display:none; margin-top:16px; padding:22px; border:1px dashed #354562; border-radius:16px; color:#b6c4dc; text-align:center; }
 .game-list > .game-card[hidden] { display:none !important; }
+.game-detail-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; margin-top:2px; border:1px solid #4c8cff; border-radius:11px; background:#246bfe; color:#fff; font:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+.game-detail-btn:hover { filter:brightness(1.12); transform:translateY(-1px); }
+.game-detail-overlay { position:fixed; inset:0; z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; background:#030713d9; backdrop-filter:blur(8px); overflow:auto; }
+.game-detail-overlay.open { display:flex; }
+.game-detail-panel { width:min(920px,100%); max-height:min(92vh,1000px); overflow:auto; border:1px solid #354a6c; border-radius:22px; background:#0e182b; color:#f4f7ff; box-shadow:0 30px 100px #000a; }
+.game-detail-top { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:20px 24px; border-bottom:1px solid #293a57; }
+.game-detail-top h2 { font-size:25px; margin:0; }
+.game-detail-close { border:1px solid #354562; border-radius:10px; background:#192843; color:white; font-size:22px; width:42px; height:42px; cursor:pointer; }
+.game-detail-content { padding:24px; }
+.game-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 0 24px; }
+.game-gallery figure { margin:0; min-width:0; }
+.game-gallery img { display:block; width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; border:1px solid #354562; background:#172238; }
+.game-gallery figcaption { color:#9eacc6; font-size:11px; margin-top:7px; }
+.game-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.game-spec { padding:14px; border:1px solid #293a57; border-radius:13px; background:#121f34; }
+.game-spec span { display:block; color:#93a4c1; font-size:11px; text-transform:uppercase; letter-spacing:.12em; margin-bottom:6px; }
+.game-spec strong { font-size:14px; }
+.game-detail-description { color:#b6c4dc; line-height:1.7; font-size:14px; }
+.game-detail-note { color:#f6dba1; border:1px solid #66532e; background:#302819; border-radius:12px; padding:12px 14px; font-size:12px; line-height:1.6; margin-top:16px; }
+@media(max-width:600px) { .game-gallery { grid-template-columns:1fr; } .game-gallery img { aspect-ratio:16/9; } .game-detail-content { padding:16px; } .game-detail-grid { grid-template-columns:1fr 1fr; } .game-detail-top { padding:16px; } }
+
 @media (max-width:760px) { .nav-links a:not(.nav-cta) { display:none; } .hero { padding:42px 0 48px; } .hero-grid { grid-template-columns:1fr; gap:12px; } .hero-copy { text-align:center; } .hero-copy p { margin-left:auto; margin-right:auto; } .actions { justify-content:center; } .game-art { min-height:315px; } .cover { width:265px; } .cover-sun { width:145px; height:145px; } .section { padding:48px 0; } .section-head { display:block; } .section-head p { margin-top:14px; } .feature { grid-template-columns:1fr; } .discord { padding:30px; flex-direction:column; align-items:flex-start; } }
 @media (max-width:500px) { .wrap { width:min(100% - 28px,1160px); } .nav { padding:16px 0; } .brand-name { font-size:15px; } .nav-cta { padding:10px 12px; font-size:12px; } .hero p { font-size:15px; } .game-art { min-height:285px; } .cover { width:235px; } .info-grid { grid-template-columns:1fr; } .discord { padding:24px; } .footer-row { flex-direction:column; align-items:flex-start; } }
 </style>
@@ -199,7 +220,13 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
           <article class="game-card"><div class="game-thumb final-fantasy"><div class="thumb-label"><small>SQUARE</small>FINAL FANTASY VI</div></div><div class="game-body"><h3>Final Fantasy VI</h3><p>RPG de fantasía con una historia extensa, añadido como ejemplo de categoría.</p><div class="chips"><span class="chip">RPG</span><span class="chip">SNES</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
           <article class="game-card"><div class="game-thumb celeste"><div class="thumb-label"><small>INDIE</small>CELESTE</div></div><div class="game-body"><h3>Celeste</h3><p>Plataformas y precisión, incluido como ejemplo de cómo podría organizarse un catálogo moderno.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Indie</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
         </div>
-        <p class="demo-note">Estas tarjetas son ejemplos visuales para mostrar el diseño de la biblioteca. No representan enlaces de descarga ni una garantía de compatibilidad con cada consola.</p>
+                <p class="demo-note">Estas tarjetas son ejemplos visuales para mostrar el diseño de la biblioteca. No representan enlaces de descarga ni una garantía de compatibilidad con cada consola.</p>
+        <div class="game-detail-overlay" id="game-detail-overlay" role="dialog" aria-modal="true" aria-labelledby="game-detail-title">
+          <div class="game-detail-panel">
+            <div class="game-detail-top"><h2 id="game-detail-title">Ficha del juego</h2><button class="game-detail-close" type="button" id="game-detail-close" aria-label="Cerrar ficha">×</button></div>
+            <div class="game-detail-content" id="game-detail-content"></div>
+          </div>
+        </div>
       </div>
     </section>
     <section class="section" id="sistemas">
@@ -230,6 +257,53 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
  document.querySelectorAll('#genre-filters [data-genre]').forEach(button=>button.addEventListener('click',()=>{genre=button.dataset.genre;document.querySelectorAll('#genre-filters [data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
  document.querySelectorAll('#letter-filters [data-letter]').forEach(button=>button.addEventListener('click',()=>{letter=button.dataset.letter;document.querySelectorAll('#letter-filters [data-letter]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
  search.addEventListener('input',applyFilters);applyFilters();
+})();
+</script>
+
+<script>
+(() => {
+  const details = {
+    "New Super Mario Bros. 2": {year:"2012",developer:"Nintendo",platform:"Nintendo 3DS",genre:"Plataformas",description:"Aventura de plataformas en 2D con Mario, niveles clásicos y monedas como elemento central.",note:"La compatibilidad con R36S no está verificada. Las imágenes de esta ficha son ilustrativas y deben reemplazarse por capturas reales de gameplay."},
+    "Hollow Knight": {year:"2017",developer:"Team Cherry",platform:"PC y consolas; port depende del sistema",genre:"Acción / metroidvania",description:"Exploración, combate y descubrimiento en un reino subterráneo dibujado a mano.",note:"El funcionamiento del port depende de la versión y del sistema instalado en la consola."},
+    "Asphalt 5": {year:"2009",developer:"Gameloft",platform:"Móviles y otras plataformas; port",genre:"Carreras",description:"Carreras arcade con coches deportivos, circuitos urbanos y pruebas rápidas.",note:"El rendimiento puede variar según el port y el sistema. Conviene indicar en qué sistema se probó."},
+    "The Legend of Zelda: The Wind Waker": {year:"2002 (GameCube)",developer:"Nintendo",platform:"Nintendo GameCube",genre:"Aventura",description:"Aventura de acción y exploración en un mundo de islas y navegación marítima.",note:"La ficha describe el juego original; no garantiza que funcione en R36S ni en todos los sistemas."},
+    "Super Mario World": {year:"1990 (Japón)",developer:"Nintendo",platform:"Super Nintendo (SNES)",genre:"Plataformas",description:"Un clásico de plataformas en 2D con exploración de niveles, secretos y la primera aparición de Yoshi.",note:"La consola original es SNES; la experiencia depende del emulador y de la configuración."},
+    "Sonic the Hedgehog 2": {year:"1992",developer:"SEGA",platform:"Mega Drive / Genesis",genre:"Plataformas",description:"Plataformas de ritmo rápido con Sonic y Tails, niveles con rutas alternativas y anillos.",note:"La consola original es Mega Drive/Genesis; la compatibilidad depende del emulador."},
+    "Street Fighter II": {year:"1991 (arcade)",developer:"Capcom",platform:"Arcade; también tuvo versiones domésticas",genre:"Lucha",description:"Juego de lucha competitivo con personajes distintivos, movimientos especiales y combates uno contra uno.",note:"Existen varias ediciones y versiones; la ficha corresponde a la serie original, no a una edición específica."},
+    "Mario Kart 64": {year:"1996 (Japón)",developer:"Nintendo",platform:"Nintendo 64",genre:"Carreras",description:"Carreras de karts con objetos, circuitos variados y multijugador local.",note:"La ficha corresponde al juego original de Nintendo 64; el rendimiento depende del emulador."},
+    "Final Fantasy VI": {year:"1994",developer:"Square",platform:"Super Nintendo (SNES)",genre:"RPG",description:"RPG por turnos con un amplio elenco, magia, exploración y una historia de fantasía.",note:"Existen distintas versiones del juego; la ficha corresponde al lanzamiento original de SNES."},
+    "Celeste": {year:"2018",developer:"Matt Makes Games / Extremely OK Games",platform:"PC y consolas",genre:"Plataformas",description:"Plataformas de precisión sobre escalar una montaña, con controles ajustados y una historia personal.",note:"Esta ficha no afirma compatibilidad con R36S; el juego original no es un port Linux genérico."}
+  };
+  const overlay=document.getElementById('game-detail-overlay');
+  const content=document.getElementById('game-detail-content');
+  const title=document.getElementById('game-detail-title');
+  const close=document.getElementById('game-detail-close');
+  const escapeHTML=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  document.querySelectorAll('#juegos .game-card').forEach(card=>{
+    const heading=card.querySelector('h3');
+    if(!heading)return;
+    const name=heading.textContent.trim();
+    const body=card.querySelector('.game-body');
+    if(!body || body.querySelector('.game-detail-btn'))return;
+    const button=document.createElement('button');
+    button.type='button';button.className='game-detail-btn';button.textContent='Ver ficha completa ↗';
+    button.addEventListener('click',()=>{
+      const data=details[name]||{year:'Por confirmar',developer:'Por confirmar',platform:'Ver etiquetas de la ficha',genre:'Ver etiquetas de la ficha',description:body.querySelector('p')?.textContent||'Información pendiente.',note:'Ficha en desarrollo. Verificar los datos técnicos y agregar capturas reales antes de publicar como información definitiva.'};
+      const genre=data.genre;
+      const thumb=card.querySelector('.game-thumb');
+      const styleClass=[...(thumb?.classList||[])].filter(c=>c!=='game-thumb').join(' ');
+      const labels=['Vista general','Escena de juego','Otra captura'];
+      title.textContent=name;
+      content.innerHTML='<div class="game-gallery">'+labels.map((label,index)=>'<figure><div class="game-gallery-art '+escapeHTML(styleClass)+'" role="img" aria-label="'+escapeHTML(label+' ilustrativa de '+name)+'" style="aspect-ratio:16/10;border-radius:12px;border:1px solid #354562;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#173b6a,#172238 55%,#55344b);font-size:40px">'+(index===0?'🎮':index===1?'🕹️':'✨')+'</div><figcaption>'+label+' · ilustración provisional</figcaption></figure>').join('')+'</div>'+
+      '<p class="game-detail-description">'+escapeHTML(data.description)+'</p><div class="game-detail-grid">'+[['Lanzamiento',data.year],['Desarrollador',data.developer],['Plataforma original',data.platform],['Género',genre]].map(([label,value])=>'<div class="game-spec"><span>'+escapeHTML(label)+'</span><strong>'+escapeHTML(value)+'</strong></div>').join('')+'</div><div class="game-detail-note">'+escapeHTML(data.note)+'</div>';
+      overlay.classList.add('open');document.body.style.overflow='hidden';close.focus();
+    });
+    body.appendChild(button);
+  });
+  function dismiss(){overlay.classList.remove('open');document.body.style.overflow='';}
+  close.addEventListener('click',dismiss);
+  overlay.addEventListener('click',event=>{if(event.target===overlay)dismiss();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&overlay.classList.contains('open'))dismiss();});
 })();
 </script>
 </body>
