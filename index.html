@@ -57,12 +57,19 @@ h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px)
 .console-stage { position:relative; min-height:370px; display:grid; place-items:center; isolation:isolate; }
 .r36s-photo { position:relative; z-index:1; display:block; width:min(390px,100%); aspect-ratio:1; object-fit:contain; padding:8px; background:#fff; border-radius:24px; box-shadow:0 35px 65px #0009; transform:rotate(-4deg); }
 .video-stage { min-height:370px; }
-.gameplay-screen { position:relative; z-index:1; width:min(420px,100%); aspect-ratio:9/16; padding:10px; border-radius:28px; background:linear-gradient(145deg,#ffffff,#f8dce9); border:1px solid #fff; box-shadow:0 28px 60px #7d385b30; transform:none; overflow:hidden; }
+.gameplay-wrap { width:min(420px,100%); position:relative; z-index:1; }
+.gameplay-screen { position:relative; width:100%; aspect-ratio:9/16; padding:10px; border-radius:28px; background:linear-gradient(145deg,#ffffff,#f8dce9); border:1px solid #fff; box-shadow:0 28px 60px #7d385b30; transform:none; overflow:hidden; }
 .gameplay-screen iframe { display:block; width:100%; height:100%; border:0; border-radius:19px; background:#171426; }
+.gameplay-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; }
+.gameplay-action { display:inline-flex; justify-content:center; align-items:center; gap:7px; flex:1; padding:12px 14px; border-radius:13px; color:#fff; font-size:13px; font-weight:900; box-shadow:0 7px 18px #7d385b20; transition:transform .18s,filter .18s; }
+.gameplay-action:hover { transform:translateY(-2px); filter:brightness(1.06); }
+.like-action { background:#d94f91; }
+.subscribe-action { background:#cf263c; }
+.gameplay-hint { margin:9px 4px 0; text-align:center; color:#7b5267; font-size:11px; line-height:1.45; }
 .screen-caption { position:absolute; left:18px; bottom:17px; padding:6px 9px; border-radius:7px; background:#1f1939cc; color:#fff; font-size:9px; font-weight:900; letter-spacing:.12em; pointer-events:none; }
 .video-stage { min-height:0; display:flex; justify-content:center; align-items:center; padding:10px 0; }
 .video-stage::before { background:radial-gradient(ellipse at center,#e77eaf55,transparent 65%); }
-@media(max-width:760px) { .gameplay-screen { width:min(390px,100%); } .video-stage { min-height:0; padding:16px 0; } }
+@media(max-width:760px) { .gameplay-wrap { width:min(390px,100%); } .video-stage { min-height:0; padding:16px 0; } .gameplay-action { padding:11px 8px; font-size:12px; } }
 .console-stage::before { content:""; position:absolute; inset:8% 0; background:radial-gradient(ellipse at center,#236dff55,transparent 65%); filter:blur(14px); z-index:-1; }
 .handheld { position:relative; width:min(440px,100%); aspect-ratio:1.42; border-radius:34px 34px 43px 43px; padding:19px 20px 22px; background:linear-gradient(145deg,#3d4b65,#151c2b 42%,#080c14 75%,#344158); border:2px solid #7183a3; box-shadow:0 35px 65px #0009, inset 0 2px 4px #ffffff55; transform:rotate(-7deg); }
 .handheld::before { content:""; position:absolute; inset:7px; border-radius:28px 28px 36px 36px; border:1px solid #a9bbd744; pointer-events:none; }
@@ -195,7 +202,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
           <p>Bienvenidos a Un Desastre Gaming: novedades, consolas retro, pruebas en R36S y clones, gameplays y una comunidad para compartir la pasión por los videojuegos.</p>
           <div class="actions"><a class="btn btn-primary" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Sumate al Discord</a><a class="btn btn-outline" href="#juegos">🎮 Explorar juegos</a></div>
         </div>
-        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=0&amp;start=0&amp;end=15&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de Un Desastre Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="console-note">¡A jugar! 🎮</div></div>
+        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de Un Desastre Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
       </div>
     </section>
     <section class="section" id="juegos">
@@ -335,8 +342,10 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
   const showShort = index => {
     const id = shorts[index];
     screen.src = 'https://www.youtube-nocookie.com/embed/' + id +
-      '?autoplay=1&mute=1&controls=0&start=0&end=30&playsinline=1&rel=0';
+      '?autoplay=1&mute=1&controls=1&start=0&end=30&playsinline=1&rel=0';
     screen.title = 'Short de gameplay ' + (index + 1) + ' de ' + shorts.length + ' · Un Desastre Gaming';
+    const likeLink = document.getElementById('short-like-link');
+    if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
   };
   showShort(current);
   window.setInterval(() => {
