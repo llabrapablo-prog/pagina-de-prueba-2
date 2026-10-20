@@ -187,6 +187,14 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 
 @media (max-width:760px) { .nav-links a:not(.nav-cta) { display:none; } .hero { padding:42px 0 48px; } .hero-grid { grid-template-columns:1fr; gap:12px; } .hero-copy { text-align:center; } .hero-copy p { margin-left:auto; margin-right:auto; } .actions { justify-content:center; } .game-art { min-height:315px; } .cover { width:265px; } .cover-sun { width:145px; height:145px; } .section { padding:48px 0; } .section-head { display:block; } .section-head p { margin-top:14px; } .feature { grid-template-columns:1fr; } .discord { padding:30px; flex-direction:column; align-items:flex-start; } }
 @media (max-width:500px) { .wrap { width:min(100% - 28px,1160px); } .nav { padding:16px 0; } .brand-name { font-size:15px; } .nav-cta { padding:10px 12px; font-size:12px; } .hero p { font-size:15px; } .game-art { min-height:285px; } .cover { width:235px; } .info-grid { grid-template-columns:1fr; } .discord { padding:24px; } .footer-row { flex-direction:column; align-items:flex-start; } }
+
+  .short-nav-button { position:absolute; top:50%; z-index:5; transform:translateY(-50%); display:flex; align-items:center; justify-content:center; width:46px; height:58px; border:1px solid #ffffffc9; border-radius:14px; background:#26152dcc; color:#fff; font-size:29px; font-weight:900; cursor:pointer; opacity:0; pointer-events:none; transition:opacity .18s,background .18s,transform .18s; box-shadow:0 4px 16px #0005; }
+  .short-nav-button.previous { left:15px; } .short-nav-button.next { right:15px; }
+  .gameplay-screen:hover .short-nav-button, .gameplay-screen:focus-within .short-nav-button { opacity:1; pointer-events:auto; }
+  .short-nav-button:hover { background:#d94f91f2; transform:translateY(-50%) scale(1.06); }
+  .short-nav-button:focus-visible { opacity:1; pointer-events:auto; outline:3px solid #fff; outline-offset:2px; }
+  @media (hover:none) { .short-nav-button { opacity:.92; pointer-events:auto; width:40px; height:50px; } }
+
 </style>
 </head>
 <body>
@@ -204,7 +212,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
           <p>Bienvenidos a Un Desastre Gaming: novedades, consolas retro, pruebas en R36S y clones, gameplays y una comunidad para compartir la pasión por los videojuegos.</p>
           <div class="actions"><a class="btn btn-primary" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Sumate al Discord</a><a class="btn btn-outline" href="#juegos">🎮 Explorar juegos</a></div>
         </div>
-        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de Un Desastre Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
+        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de Un Desastre Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><button class="short-nav-button previous" id="short-previous" type="button" aria-label="Video anterior" title="Video anterior">‹</button><button class="short-nav-button next" id="short-next" type="button" aria-label="Video siguiente" title="Video siguiente">›</button><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
       </div>
     </section>
     <section class="section" id="juegos">
@@ -341,19 +349,21 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
     'bjOG8T4Kuwk'
   ];
   let current = 0;
+  let rotateTimer;
   const showShort = index => {
-    const id = shorts[index];
+    current = (index + shorts.length) % shorts.length;
+    const id = shorts[current];
     screen.src = 'https://www.youtube-nocookie.com/embed/' + id +
       '?autoplay=1&mute=1&controls=1&start=0&end=59&playsinline=1&rel=0';
-    screen.title = 'Short de gameplay ' + (index + 1) + ' de ' + shorts.length + ' · Un Desastre Gaming';
+    screen.title = 'Short de gameplay ' + (current + 1) + ' de ' + shorts.length + ' · Un Desastre Gaming';
     const likeLink = document.getElementById('short-like-link');
     if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
+    window.clearTimeout(rotateTimer);
+    rotateTimer = window.setTimeout(() => showShort(current + 1), 59000);
   };
-  showShort(current);
-  window.setInterval(() => {
-    current = (current + 1) % shorts.length;
-    showShort(current);
-  }, 59000);
+  document.getElementById('short-previous')?.addEventListener('click', () => showShort(current - 1));
+  document.getElementById('short-next')?.addEventListener('click', () => showShort(current + 1));
+  showShort(0);
 })();
 </script>
 
