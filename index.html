@@ -154,6 +154,8 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 .footer-row { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .footer-links { display:flex; gap:18px; flex-wrap:wrap; }
 .catalog-tools { margin:0 0 22px; padding:22px; border:1px solid #293a57; border-radius:20px; background:linear-gradient(145deg,#111d32,#0d1525); }
+.catalog-search { width:100%; padding:13px 15px; border:1px solid #354562; border-radius:12px; background:#0a1221; color:#f4f7ff; font:inherit; outline-offset:3px; }
+.catalog-search::placeholder { color:#8998b2; }
 .filter-label { display:block; color:#9ce8ff; font-size:11px; font-weight:900; letter-spacing:.15em; text-transform:uppercase; margin:18px 0 9px; }
 .filter-row { display:flex; flex-wrap:wrap; gap:8px; }
 .filter-chip { border:1px solid #30425f; color:#d8e5ff; background:#192843; border-radius:999px; padding:8px 12px; font:inherit; font-size:12px; font-weight:800; cursor:pointer; }
@@ -226,6 +228,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
         </div>
         <div class="section-head" style="margin-top:48px"><div><div class="kicker">Más ejemplos</div><h2>Así se verían más juegos</h2></div><p>Tarjetas de muestra para probar cómo se ve la portada con una biblioteca más completa.</p></div>
         <div class="catalog-tools" id="catalog-tools" aria-label="Filtros de juegos">
+<label class="filter-label" for="catalog-search">Buscar por nombre</label><input class="catalog-search" id="catalog-search" type="search" placeholder="Ej.: Mario, Sonic, Zelda..." autocomplete="off">
 <span class="filter-label">Filtrar por género</span><div class="filter-row" id="genre-filters"><button class="filter-chip" type="button" data-genre="Todos" aria-pressed="true">Todos</button><button class="filter-chip" type="button" data-genre="Acción" aria-pressed="false">⚔️ Acción</button><button class="filter-chip" type="button" data-genre="Carreras" aria-pressed="false">🏎️ Carreras</button><button class="filter-chip" type="button" data-genre="RPG" aria-pressed="false">🧙 RPG</button><button class="filter-chip" type="button" data-genre="Lucha" aria-pressed="false">🥊 Lucha</button><button class="filter-chip" type="button" data-genre="Plataformas" aria-pressed="false">🪜 Plataformas</button><button class="filter-chip" type="button" data-genre="Aventura" aria-pressed="false">🗺️ Aventura</button></div>
 <p class="catalog-status" id="catalog-status" aria-live="polite">Mostrando juegos de ejemplo.</p><div class="catalog-empty" id="catalog-empty">No encontramos juegos con esos filtros. Probá con otra búsqueda.</div></div>
         <div class="game-list">
@@ -269,12 +272,12 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 <script>
 (() => {
  const grid=document.querySelector('#juegos .game-list'); if(!grid)return;
- const cards=[...grid.querySelectorAll(':scope > .game-card')], status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
+ const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
  let genre='Todos';
  const norm=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
- function applyFilters(){let visible=0;cards.forEach(card=>{const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));const matches=genre==='Todos'||tags.some(tag=>tag.includes(norm(genre)));card.hidden=!matches;if(matches)visible++;});status.textContent=`Mostrando ${visible} de ${cards.length} juegos de ejemplo.`;empty.style.display=visible?'none':'block';}
+ function applyFilters(){const query=norm(search.value.trim());let visible=0;cards.forEach(card=>{const name=card.querySelector('h3')?.textContent.trim()||'';const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));const matches=(!query||norm(name).includes(query))&&(genre==='Todos'||tags.some(tag=>tag.includes(norm(genre)));card.hidden=!matches;if(matches)visible++;});status.textContent=`Mostrando ${visible} de ${cards.length} juegos de ejemplo.`;empty.style.display=visible?'none':'block';}
  document.querySelectorAll('#genre-filters [data-genre]').forEach(button=>button.addEventListener('click',()=>{genre=button.dataset.genre;document.querySelectorAll('#genre-filters [data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
- applyFilters();
+ search.addEventListener('input',applyFilters);applyFilters();
 })();
 </script>
 
