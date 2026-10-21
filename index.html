@@ -125,6 +125,8 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .game-list .game-body { padding:20px; }
 .game-list .game-body h3 { font-size:19px; }
 .game-list .game-thumb::before { font-size:66px; right:18px; top:18px; }
+.game-thumb.sonicmania { background:radial-gradient(circle at 72% 25%,#fff4a6 0 8%,transparent 9%),linear-gradient(145deg,#167fce,#e33b54 55%,#f2b52e); }
+.game-thumb.sonicmania::before { content:"🦔"; }
 .game-thumb.hollow { background:radial-gradient(circle at 72% 28%,#a9eaff 0 8%,transparent 9%),linear-gradient(145deg,#152e4e,#253b63 55%,#0c1729); }
 .game-thumb.hollow::before { content:"⚔️"; }
 .game-thumb.asphalt { background:radial-gradient(circle at 72% 25%,#ffdc8a 0 7%,transparent 8%),linear-gradient(145deg,#f18b31,#a93640 55%,#222a4b); }
@@ -227,11 +229,14 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
           </div>
         </div>
         <div class="section-head" style="margin-top:48px"><div><div class="kicker">Más ejemplos</div><h2>Así se verían más juegos</h2></div><p>Tarjetas de muestra para probar cómo se ve la portada con una biblioteca más completa.</p></div>
+        <div class="section-head" style="margin-top:34px"><div><div class="kicker">Novedades</div><h2>Últimos agregados</h2></div><p>Los juegos nuevos aparecerán aquí automáticamente según su fecha de incorporación al catálogo.</p></div>
+        <div class="game-list latest-games" id="latest-games" aria-live="polite"></div>
         <div class="catalog-tools" id="catalog-tools" aria-label="Filtros de juegos">
 <label class="filter-label" for="catalog-search">Buscar por nombre</label><input class="catalog-search" id="catalog-search" type="search" placeholder="Ej.: Mario, Sonic, Zelda..." autocomplete="off">
 <span class="filter-label">Filtrar por género</span><div class="filter-row" id="genre-filters"><button class="filter-chip" type="button" data-genre="Todos" aria-pressed="true">Todos</button><button class="filter-chip" type="button" data-genre="Acción" aria-pressed="false">⚔️ Acción</button><button class="filter-chip" type="button" data-genre="Carreras" aria-pressed="false">🏎️ Carreras</button><button class="filter-chip" type="button" data-genre="RPG" aria-pressed="false">🧙 RPG</button><button class="filter-chip" type="button" data-genre="Lucha" aria-pressed="false">🥊 Lucha</button><button class="filter-chip" type="button" data-genre="Plataformas" aria-pressed="false">🪜 Plataformas</button><button class="filter-chip" type="button" data-genre="Aventura" aria-pressed="false">🗺️ Aventura</button></div>
 <p class="catalog-status" id="catalog-status" aria-live="polite">Mostrando juegos de ejemplo.</p><div class="catalog-empty" id="catalog-empty">No encontramos juegos con esos filtros. Probá con otra búsqueda.</div></div>
         <div class="game-list">
+          <article class="game-card" data-added="2026-10-20"><div class="game-thumb sonicmania"><div class="thumb-label"><small>SEGA · 2017</small>SONIC MANIA</div></div><div class="game-body"><h3>Sonic Mania</h3><p>Una aventura de plataformas en 2D que recupera la velocidad, los escenarios y el estilo clásico de Sonic.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Acción</span><span class="chip">PC y consolas</span><span class="chip warn">Ejemplo agregado</span></div></div></article>
           <article class="game-card"><div class="game-thumb hollow"><div class="thumb-label"><small>TEAM CHERRY</small>HOLLOW KNIGHT</div></div><div class="game-body"><h3>Hollow Knight</h3><p>Aventura de acción y exploración en un reino subterráneo lleno de secretos.</p><div class="chips"><span class="chip">Metroidvania</span><span class="chip">PC y consolas</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
           <article class="game-card"><div class="game-thumb asphalt"><div class="thumb-label"><small>GAMELOFT</small>ASPHALT 5</div></div><div class="game-body"><h3>Asphalt 5</h3><p>Un juego de carreras arcade con autos deportivos y circuitos variados.</p><div class="chips"><span class="chip">Carreras</span><span class="chip">Port de ejemplo</span><span class="chip warn">Compatibilidad según sistema</span></div></div></article>
           <article class="game-card"><div class="game-thumb zelda"><div class="thumb-label"><small>NINTENDO</small>ZELDA</div></div><div class="game-body"><h3>The Legend of Zelda: The Wind Waker</h3><p>Aventura de exploración por islas y mares, con un estilo visual muy característico.</p><div class="chips"><span class="chip">Aventura</span><span class="chip">GameCube</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
@@ -273,6 +278,8 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 (() => {
  const grid=document.querySelector('#juegos .game-list'); if(!grid)return;
  const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
+ const latestGrid=document.getElementById('latest-games');
+ cards.filter(card=>card.dataset.added).sort((a,b)=>b.dataset.added.localeCompare(a.dataset.added)).forEach(card=>latestGrid?.appendChild(card.cloneNode(true)));
  let genre='Todos';
  const norm=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  function applyFilters(){const query=norm(search.value.trim());let visible=0;cards.forEach(card=>{const name=card.querySelector('h3')?.textContent.trim()||'';const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));const matches=(!query||norm(name).includes(query))&&(genre==='Todos'||tags.some(tag=>tag.includes(norm(genre))));card.hidden=!matches;if(matches)visible++;});status.textContent=`Mostrando ${visible} de ${cards.length} juegos de ejemplo.`;empty.style.display=visible?'none':'block';}
@@ -285,6 +292,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 (() => {
   const details = {
     "New Super Mario Bros. 2": {year:"2012",developer:"Nintendo",platform:"Nintendo 3DS",genre:"Plataformas",description:"Aventura de plataformas en 2D con Mario, niveles clásicos y monedas como elemento central.",note:"La compatibilidad con R36S no está verificada. Las imágenes de esta ficha son ilustrativas y deben reemplazarse por capturas reales de gameplay."},
+    "Sonic Mania": {year:"2017",developer:"PagodaWest Games y Headcannon; publicado por SEGA",platform:"PC, Nintendo Switch, PlayStation 4 y Xbox One",genre:"Plataformas / Acción",description:"Juego de plataformas en 2D inspirado en la etapa clásica de Sonic, con escenarios renovados, rutas alternativas y velocidad.",note:"Ficha de ejemplo. La compatibilidad depende de la plataforma y del sistema; no se afirma compatibilidad con R36S."},
     "Hollow Knight": {year:"2017",developer:"Team Cherry",platform:"PC y consolas; port depende del sistema",genre:"Acción / metroidvania",description:"Exploración, combate y descubrimiento en un reino subterráneo dibujado a mano.",note:"El funcionamiento del port depende de la versión y del sistema instalado en la consola."},
     "Asphalt 5": {year:"2009",developer:"Gameloft",platform:"Móviles y otras plataformas; port",genre:"Carreras",description:"Carreras arcade con coches deportivos, circuitos urbanos y pruebas rápidas.",note:"El rendimiento puede variar según el port y el sistema. Conviene indicar en qué sistema se probó."},
     "The Legend of Zelda: The Wind Waker": {year:"2002 (GameCube)",developer:"Nintendo",platform:"Nintendo GameCube",genre:"Aventura",description:"Aventura de acción y exploración en un mundo de islas y navegación marítima.",note:"La ficha describe el juego original; no garantiza que funcione en R36S ni en todos los sistemas."},
