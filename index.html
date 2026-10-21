@@ -196,6 +196,13 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
   .short-nav-button:focus-visible { opacity:1; pointer-events:auto; outline:3px solid #fff; outline-offset:2px; }
   @media (hover:none) { .short-nav-button { opacity:.92; pointer-events:auto; width:40px; height:50px; } }
 
+/* Paginación del catálogo y de novedades */
+.pagination { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:8px; margin:24px 0 8px; }
+.pagination button { min-width:42px; min-height:40px; padding:9px 13px; border:1px solid #dca6c2; border-radius:11px; background:#fff; color:#63334d; font:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+.pagination button[aria-current="page"] { background:#d94f91; color:#fff; border-color:#d94f91; box-shadow:0 5px 14px #d94f9133; }
+.pagination button:disabled { opacity:.4; cursor:not-allowed; }
+.pagination .page-summary { width:100%; text-align:center; color:#7b5267; font-size:12px; margin-top:3px; }
+.game-list > .game-card[hidden] { display:none !important; }
 </style>
 </head>
 <body>
@@ -231,6 +238,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
         <div class="section-head" style="margin-top:48px"><div><div class="kicker">Más ejemplos</div><h2>Así se verían más juegos</h2></div><p>Tarjetas de muestra para probar cómo se ve la portada con una biblioteca más completa.</p></div>
         <div class="section-head" style="margin-top:34px"><div><div class="kicker">Novedades</div><h2>Últimos agregados</h2></div><p>Los juegos nuevos aparecerán aquí automáticamente según su fecha de incorporación al catálogo.</p></div>
         <div class="game-list latest-games" id="latest-games" aria-live="polite"></div>
+        <nav class="pagination" id="latest-pagination" aria-label="Páginas de últimos juegos"></nav>
         <div class="catalog-tools" id="catalog-tools" aria-label="Filtros de juegos">
 <label class="filter-label" for="catalog-search">Buscar por nombre</label><input class="catalog-search" id="catalog-search" type="search" placeholder="Ej.: Mario, Sonic, Zelda..." autocomplete="off">
 <span class="filter-label">Filtrar por género</span><div class="filter-row" id="genre-filters"><button class="filter-chip" type="button" data-genre="Todos" aria-pressed="true">Todos</button><button class="filter-chip" type="button" data-genre="Acción" aria-pressed="false">⚔️ Acción</button><button class="filter-chip" type="button" data-genre="Carreras" aria-pressed="false">🏎️ Carreras</button><button class="filter-chip" type="button" data-genre="RPG" aria-pressed="false">🧙 RPG</button><button class="filter-chip" type="button" data-genre="Lucha" aria-pressed="false">🥊 Lucha</button><button class="filter-chip" type="button" data-genre="Plataformas" aria-pressed="false">🪜 Plataformas</button><button class="filter-chip" type="button" data-genre="Aventura" aria-pressed="false">🗺️ Aventura</button></div>
@@ -247,6 +255,7 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
           <article class="game-card"><div class="game-thumb final-fantasy"><div class="thumb-label"><small>SQUARE</small>FINAL FANTASY VI</div></div><div class="game-body"><h3>Final Fantasy VI</h3><p>RPG de fantasía con una historia extensa, añadido como ejemplo de categoría.</p><div class="chips"><span class="chip">RPG</span><span class="chip">SNES</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
           <article class="game-card"><div class="game-thumb celeste"><div class="thumb-label"><small>INDIE</small>CELESTE</div></div><div class="game-body"><h3>Celeste</h3><p>Plataformas y precisión, incluido como ejemplo de cómo podría organizarse un catálogo moderno.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Indie</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
         </div>
+        <nav class="pagination" id="catalog-pagination" aria-label="Páginas del catálogo"></nav>
                 <p class="demo-note">Estas tarjetas son ejemplos visuales para mostrar el diseño de la biblioteca. No representan enlaces de descarga ni una garantía de compatibilidad con cada consola.</p>
         <div class="game-detail-overlay" id="game-detail-overlay" role="dialog" aria-modal="true" aria-labelledby="game-detail-title">
           <div class="game-detail-panel">
@@ -278,13 +287,33 @@ footer { border-top:1px solid #1e2a41; padding:26px 0 35px; color:#8998b2; font-
 (() => {
  const grid=document.querySelector('#juegos .game-list'); if(!grid)return;
  const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
- const latestGrid=document.getElementById('latest-games');
+ const latestGrid=document.getElementById('latest-games'), latestPagination=document.getElementById('latest-pagination'), catalogPagination=document.getElementById('catalog-pagination');
+ const pageSize=6, latestPageSize=3;
  cards.filter(card=>card.dataset.added).sort((a,b)=>b.dataset.added.localeCompare(a.dataset.added)).forEach(card=>latestGrid?.appendChild(card.cloneNode(true)));
- let genre='Todos';
+ let genre='Todos', catalogPage=1, latestPage=1;
  const norm=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
- function applyFilters(){const query=norm(search.value.trim());let visible=0;cards.forEach(card=>{const name=card.querySelector('h3')?.textContent.trim()||'';const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));const matches=(!query||norm(name).includes(query))&&(genre==='Todos'||tags.some(tag=>tag.includes(norm(genre))));card.hidden=!matches;if(matches)visible++;});status.textContent=`Mostrando ${visible} de ${cards.length} juegos de ejemplo.`;empty.style.display=visible?'none':'block';}
- document.querySelectorAll('#genre-filters [data-genre]').forEach(button=>button.addEventListener('click',()=>{genre=button.dataset.genre;document.querySelectorAll('#genre-filters [data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
- search.addEventListener('input',applyFilters);applyFilters();
+ function renderPagination(container,totalPages,page,onPageChange,label){
+  if(!container)return; container.replaceChildren();
+  if(totalPages<=1){container.hidden=true;return;} container.hidden=false;
+  const addButton=(text,next,disabled=false,current=false)=>{const button=document.createElement('button');button.type='button';button.textContent=text;button.disabled=disabled;if(current)button.setAttribute('aria-current','page');button.addEventListener('click',()=>onPageChange(next));container.appendChild(button);};
+  addButton('‹ Anterior',page-1,page===1);
+  for(let i=1;i<=totalPages;i++)addButton(String(i),i,false,i===page);
+  addButton('Siguiente ›',page+1,page===totalPages);
+  const summary=document.createElement('span');summary.className='page-summary';summary.textContent=label+' '+page+' de '+totalPages;container.appendChild(summary);
+ }
+ function applyFilters(){
+  const query=norm(search.value.trim());
+  const filtered=cards.filter(card=>{const name=card.querySelector('h3')?.textContent.trim()||'';const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));return (!query||norm(name).includes(query))&&(genre==='Todos'||tags.some(tag=>tag.includes(norm(genre))));});
+  const pages=Math.max(1,Math.ceil(filtered.length/pageSize));catalogPage=Math.min(catalogPage,pages);cards.forEach(card=>{card.hidden=true;});
+  filtered.forEach((card,index)=>{card.hidden=index<(catalogPage-1)*pageSize||index>=catalogPage*pageSize;});
+  const first=filtered.length?(catalogPage-1)*pageSize+1:0;status.textContent='Mostrando '+first+'–'+Math.min(catalogPage*pageSize,filtered.length)+' de '+filtered.length+' juegos filtrados ('+cards.length+' en total).';
+  empty.style.display=filtered.length?'none':'block';
+  renderPagination(catalogPagination,pages,catalogPage,next=>{catalogPage=next;applyFilters();document.getElementById('juegos')?.scrollIntoView({behavior:'smooth',block:'start'});},'Página');
+ }
+ function renderLatest(){if(!latestGrid)return;const latest=[...latestGrid.querySelectorAll(':scope > .game-card')];const pages=Math.max(1,Math.ceil(latest.length/latestPageSize));latestPage=Math.min(latestPage,pages);latest.forEach((card,index)=>{card.hidden=index<(latestPage-1)*latestPageSize||index>=latestPage*latestPageSize;});renderPagination(latestPagination,pages,latestPage,next=>{latestPage=next;renderLatest();latestGrid.scrollIntoView({behavior:'smooth',block:'center'});},'Página de novedades');}
+ document.querySelectorAll('#genre-filters [data-genre]').forEach(button=>button.addEventListener('click',()=>{genre=button.dataset.genre;catalogPage=1;document.querySelectorAll('#genre-filters [data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
+ search.addEventListener('input',()=>{catalogPage=1;applyFilters();});
+ applyFilters();renderLatest();
 })();
 </script>
 
