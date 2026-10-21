@@ -285,7 +285,9 @@ footer { border-top:1px solid #343B34; padding:26px 0 35px; color:#A7B0A0; font-
 
 <script>
 (() => {
- const grid=document.querySelector('#juegos .wrap > .game-list:not(#latest-games)'); if(!grid)return;
+ const toolsPanel=document.getElementById('catalog-tools');
+ const grid=toolsPanel?.nextElementSibling;
+ if(!grid || !grid.classList.contains('game-list') || grid.id==='latest-games') return;
  const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
  const latestGrid=document.getElementById('latest-games'), latestPagination=document.getElementById('latest-pagination'), catalogPagination=document.getElementById('catalog-pagination');
  const pageSize=6, latestPageSize=3;
@@ -302,17 +304,29 @@ footer { border-top:1px solid #343B34; padding:26px 0 35px; color:#A7B0A0; font-
   const summary=document.createElement('span');summary.className='page-summary';summary.textContent=label+' '+page+' de '+totalPages;container.appendChild(summary);
  }
  function applyFilters(){
-  const query=norm(search.value.trim());
-  const filtered=cards.filter(card=>{const name=card.querySelector('h3')?.textContent.trim()||'';const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));return (!query||norm(name).includes(query))&&(genre==='Todos'||tags.some(tag=>tag.includes(norm(genre))));});
+  const query=norm((search?.value||'').trim());
+  const selectedGenre=norm(genre);
+  const filtered=cards.filter(card=>{
+   const name=norm(card.querySelector('h3')?.textContent||'');
+   const tags=[...card.querySelectorAll('.chips .chip:not(.warn)')].map(chip=>norm(chip.textContent));
+   return (!query||name.includes(query))&&(selectedGenre===norm('Todos')||tags.some(tag=>tag===selectedGenre||tag.includes(selectedGenre)));
+  });
   const pages=Math.max(1,Math.ceil(filtered.length/pageSize));catalogPage=Math.min(catalogPage,pages);cards.forEach(card=>{card.hidden=true;});
   filtered.forEach((card,index)=>{card.hidden=index<(catalogPage-1)*pageSize||index>=catalogPage*pageSize;});
-  const first=filtered.length?(catalogPage-1)*pageSize+1:0;status.textContent='Mostrando '+first+'–'+Math.min(catalogPage*pageSize,filtered.length)+' de '+filtered.length+' juegos filtrados ('+cards.length+' en total).';
-  empty.style.display=filtered.length?'none':'block';
+  const first=filtered.length?(catalogPage-1)*pageSize+1:0;if(status) status.textContent='Mostrando '+first+'–'+Math.min(catalogPage*pageSize,filtered.length)+' de '+filtered.length+' juegos filtrados ('+cards.length+' en total).';
+  if(empty) empty.style.display=filtered.length?'none':'block';
   renderPagination(catalogPagination,pages,catalogPage,next=>{catalogPage=next;applyFilters();document.getElementById('juegos')?.scrollIntoView({behavior:'smooth',block:'start'});},'Página');
  }
  function renderLatest(){if(!latestGrid)return;const latest=[...latestGrid.querySelectorAll(':scope > .game-card')];const pages=Math.max(1,Math.ceil(latest.length/latestPageSize));latestPage=Math.min(latestPage,pages);latest.forEach((card,index)=>{card.hidden=index<(latestPage-1)*latestPageSize||index>=latestPage*latestPageSize;});renderPagination(latestPagination,pages,latestPage,next=>{latestPage=next;renderLatest();latestGrid.scrollIntoView({behavior:'smooth',block:'center'});},'Página de novedades');}
- document.querySelectorAll('#genre-filters [data-genre]').forEach(button=>button.addEventListener('click',()=>{genre=button.dataset.genre;catalogPage=1;document.querySelectorAll('#genre-filters [data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
- search.addEventListener('input',()=>{catalogPage=1;applyFilters();});
+ const genreFilters=document.getElementById('genre-filters');
+ if(genreFilters) genreFilters.addEventListener('click',event=>{
+  const button=event.target.closest('button[data-genre]');
+  if(!button || !genreFilters.contains(button)) return;
+  genre=button.dataset.genre||'Todos';catalogPage=1;
+  genreFilters.querySelectorAll('button[data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+  applyFilters();
+ });
+ if(search) search.addEventListener('input',()=>{catalogPage=1;applyFilters();});
  applyFilters();renderLatest();
 })();
 </script>
