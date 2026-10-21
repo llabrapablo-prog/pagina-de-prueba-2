@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="es" data-sites-preview-theme="custom">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un Desastre Gaming</title>
+<style>
+:root {
+  color-scheme: light;
+  --site-primary: #e77eaf;
+  --site-secondary: #d94f91;
+  --site-background: #fff7fb;
+  --site-on-primary: #ffffff;
+  --site-on-secondary: #ffffff;
+  --site-on-background: #63334d;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  --surface: #ffffff;
+  --surface-soft: #ffe6f1;
+  --text: #63334d;
+  --muted: #956b81;
+  --border: #f2c7dc;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: linear-gradient(180deg, #f2a9ca 0%, #f5bdd7 24%, #f8cfe1 40%, #fff0f7 52%, #fff9fc 72%, #ffffff 100%); background-repeat: no-repeat; background-size: 100% 100%; background-attachment: fixed; color: var(--site-on-background); font-family: var(--site-font-body); }
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(180deg, #f2a9ca 0%, #f5bdd7 24%, #f8cfe1 40%, #fff0f7 52%, #fff9fc 72%, #ffffff 100%); }
+html { min-height: 100%; background: #ffffff; }
+#app { min-height: 100vh; width: 100%; background: transparent; color: var(--site-on-background); border-radius: 0; overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible { outline: 3px solid #d94f91; outline-offset: 4px; }
+.wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+.nav { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 0; }
+.brand { display:flex; align-items:center; gap:12px; font-weight:950; letter-spacing:-.04em; }
+.brand-mark { width:45px; height:45px; display:grid; place-items:center; background:linear-gradient(135deg,#d94f91,#f2a9ca); color:white; border-radius:14px; font-size:24px; box-shadow:0 8px 24px #246bfe40; }
+.brand-name { font-size:18px; line-height:1.05; }
+.brand-name span { display:block; color:#a83c72; font-size:11px; letter-spacing:.22em; margin-top:5px; }
+.nav-links { display:flex; align-items:center; gap:25px; color:#8c5673; font-size:14px; font-weight:700; }
+.nav-links a:hover { color:#fff; }
+.nav-cta { background:var(--site-secondary); color:white; padding:11px 16px; border-radius:12px; }
+.hero { position:relative; padding:60px 0 72px; background:linear-gradient(180deg,#f2a9ca 0%,#f8cfe1 45%,#fff7fb 100%); border-top:1px solid #f2c7dc; border-bottom:1px solid #f2c7dc; }
+.hero-grid { display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:40px; }
+.eyebrow { display:inline-flex; align-items:center; gap:8px; border:1px solid #e6a6c6; background:#fff0f7; color:#a83c72; border-radius:999px; padding:8px 12px; font-size:11px; font-weight:900; letter-spacing:.15em; text-transform:uppercase; }
+.pulse { width:7px; height:7px; background:#50f2b2; border-radius:50%; box-shadow:0 0 0 4px #50f2b220; }
+h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px) * var(--site-heading-scale)); line-height:.99; letter-spacing:-.065em; margin:23px 0 20px; max-width:670px; }
+.gradient { background:linear-gradient(90deg,#69dfff,#a4b7ff 60%,#ff947d); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero p { color:#81536b; font-size:17px; line-height:1.7; max-width:540px; margin:0 0 27px; }
+.actions { display:flex; flex-wrap:wrap; gap:12px; }
+.btn { display:inline-flex; justify-content:center; align-items:center; gap:10px; padding:14px 19px; border-radius:13px; font-size:14px; font-weight:850; transition:transform .18s,filter .18s; }
+.btn:hover { transform:translateY(-2px); filter:brightness(1.08); }
+.btn-primary { background:var(--site-primary); color:white; box-shadow:0 10px 28px #246bfe40; }
+.btn-outline { border:1px solid #354562; color:#e8efff; background:#ffffff08; }
+.game-art { position:relative; min-height:350px; display:grid; place-items:center; }
+.console-stage { position:relative; min-height:370px; display:grid; place-items:center; isolation:isolate; }
+.r36s-photo { position:relative; z-index:1; display:block; width:min(390px,100%); aspect-ratio:1; object-fit:contain; padding:8px; background:#fff; border-radius:24px; box-shadow:0 35px 65px #0009; transform:rotate(-4deg); }
+.video-stage { min-height:370px; }
+.gameplay-wrap { width:min(420px,100%); position:relative; z-index:1; }
+.gameplay-screen { position:relative; width:100%; aspect-ratio:9/16; padding:10px; border-radius:28px; background:linear-gradient(145deg,#ffffff,#f8dce9); border:1px solid #fff; box-shadow:0 28px 60px #7d385b30; transform:none; overflow:hidden; }
+.gameplay-screen iframe { display:block; width:100%; height:100%; border:0; border-radius:19px; background:#171426; }
+.gameplay-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; }
+.gameplay-action { display:inline-flex; justify-content:center; align-items:center; gap:7px; flex:1; padding:12px 14px; border-radius:13px; color:#fff; font-size:13px; font-weight:900; box-shadow:0 7px 18px #7d385b20; transition:transform .18s,filter .18s; }
+.gameplay-action:hover { transform:translateY(-2px); filter:brightness(1.06); }
+.like-action { background:#d94f91; }
+.subscribe-action { background:#cf263c; }
+.gameplay-hint { margin:9px 4px 0; text-align:center; color:#7b5267; font-size:11px; line-height:1.45; }
+.screen-caption { position:absolute; left:18px; bottom:17px; padding:6px 9px; border-radius:7px; background:#1f1939cc; color:#fff; font-size:9px; font-weight:900; letter-spacing:.12em; pointer-events:none; }
+.video-stage { min-height:0; display:flex; justify-content:center; align-items:center; padding:10px 0; }
+.video-stage::before { background:radial-gradient(ellipse at center,#e77eaf55,transparent 65%); }
+@media(max-width:760px) { .gameplay-wrap { width:min(390px,100%); } .video-stage { min-height:0; padding:16px 0; } .gameplay-action { padding:11px 8px; font-size:12px; } }
+.console-stage::before { content:""; position:absolute; inset:8% 0; background:radial-gradient(ellipse at center,#236dff55,transparent 65%); filter:blur(14px); z-index:-1; }
+.handheld { position:relative; width:min(440px,100%); aspect-ratio:1.42; border-radius:34px 34px 43px 43px; padding:19px 20px 22px; background:linear-gradient(145deg,#3d4b65,#151c2b 42%,#080c14 75%,#344158); border:2px solid #7183a3; box-shadow:0 35px 65px #0009, inset 0 2px 4px #ffffff55; transform:rotate(-7deg); }
+.handheld::before { content:""; position:absolute; inset:7px; border-radius:28px 28px 36px 36px; border:1px solid #a9bbd744; pointer-events:none; }
+.screen-frame { position:relative; width:57%; height:79%; margin:0 auto; padding:9px; border-radius:12px; background:linear-gradient(145deg,#080b12,#252d3d); box-shadow:inset 0 2px 8px #000; }
+.screen { height:100%; border-radius:5px; overflow:hidden; display:grid; place-items:center; text-align:center; color:#fff; background:radial-gradient(circle at 50% 35%,#ffe77b 0 7%,transparent 8%),linear-gradient(155deg,#1cc7e8,#2655c9 48%,#a43cbd 49%,#f05d55); border:1px solid #94caff88; }
+.screen strong { font-size:clamp(13px,2vw,21px); line-height:1.05; text-shadow:0 3px 0 #17235d; letter-spacing:-.04em; }
+.screen small { display:block; font-size:8px; letter-spacing:.22em; margin-bottom:5px; }
+.screen-land { align-self:end; width:130%; height:33%; background:#41c878; border-radius:50% 50% 0 0; margin-bottom:-3px; box-shadow:0 -8px 0 #a5f779; }
+.controls { position:absolute; top:35%; width:23%; display:flex; align-items:center; justify-content:center; }
+.controls.left { left:3%; }.controls.right { right:3%; }
+.dpad { position:relative; width:58px; height:58px; }
+.dpad::before,.dpad::after { content:""; position:absolute; background:linear-gradient(90deg,#101522,#39445a,#111724); border:1px solid #65738b; border-radius:5px; box-shadow:0 3px 4px #0009; }
+.dpad::before { width:20px; height:58px; left:19px; }.dpad::after { width:58px; height:20px; top:19px; }
+.buttons { display:grid; grid-template-columns:repeat(2,23px); gap:8px; transform:rotate(-22deg); }
+.buttons i { width:22px; height:22px; border-radius:50%; background:linear-gradient(145deg,#53627d,#171e2c); border:1px solid #8190aa; box-shadow:0 3px 5px #000a; }
+.stick { position:absolute; top:calc(35% + 74px); width:27px; height:27px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#5b6982,#0c111c 70%); border:2px solid #64738a; box-shadow:0 3px 5px #000a; }
+.stick.left { left:9%; }.stick.right { right:9%; }
+.console-label { position:absolute; bottom:8px; left:0; right:0; text-align:center; color:#a8b9d7; font-size:8px; font-weight:900; letter-spacing:.25em; }
+.console-note { position:absolute; right:-2px; bottom:18px; transform:rotate(5deg); background:#ff583d; color:white; padding:10px 14px; border-radius:10px; font-weight:950; font-size:13px; box-shadow:0 8px 25px #0005; }
+.game-art::before { content:""; position:absolute; width:310px; height:310px; border-radius:50%; background:linear-gradient(135deg,#2d8bff66,#ff594b55); filter:blur(35px); opacity:var(--site-decoration-opacity); }
+.cover { position:relative; width:min(350px,100%); aspect-ratio: .86; border-radius:22px; overflow:hidden; border:1px solid #9bdcff88; background:linear-gradient(160deg,#37bdf2 0%,#1979d9 35%,#f3a52d 36%,#ffcf49 63%,#e94c31 64%,#8c1538 100%); box-shadow:0 28px 80px #0008; transform:rotate(2deg); }
+.cover-sun { position:absolute; width:190px; height:190px; top:35px; left:50%; transform:translateX(-50%); border-radius:50%; background:linear-gradient(#fff9b9,#ff7b45); box-shadow:0 0 50px #ffdf6b88; }
+.cloud { position:absolute; width:100px; height:28px; background:#fff9; border-radius:30px; top:72px; left:20px; box-shadow:25px -12px 0 -4px #fff9, 49px 1px 0 -6px #fff9; }
+.cloud.two { top:115px; left:auto; right:8px; transform:scale(.7); }
+.hill { position:absolute; bottom:0; width:125%; height:150px; left:-12%; background:#45bc56; border-radius:50% 50% 0 0; border-top:9px solid #a2f16b; }
+.hill.back { bottom:42px; left:20%; background:#238e53; height:100px; }
+.pipe { position:absolute; bottom:22px; right:43px; width:48px; height:96px; background:linear-gradient(90deg,#087a40,#48e27b,#087a40); border:5px solid #d4ff9e; border-radius:7px 7px 0 0; }
+.pipe::before { content:""; position:absolute; top:-17px; left:-10px; width:58px; height:22px; background:#31cf67; border:4px solid #d4ff9e; border-radius:6px; }
+.mushroom { position:absolute; bottom:62px; left:45px; font-size:66px; filter:drop-shadow(0 8px 4px #552a2a66); }
+.coin { position:absolute; top:145px; right:54px; width:27px; height:39px; border-radius:50%; background:linear-gradient(90deg,#d58b13,#fff16a,#e9a318); border:3px solid #ffe58a; box-shadow:0 0 20px #fff16a66; }
+.cover-title { position:absolute; top:15px; left:0; width:100%; text-align:center; color:#fff; font-weight:1000; text-shadow:0 3px 0 #17356c,0 7px 12px #18335e; letter-spacing:-.07em; font-size:32px; transform:rotate(-4deg); }
+.cover-title small { display:block; font-size:13px; letter-spacing:.3em; }
+.cover-badge { position:absolute; bottom:12px; left:14px; color:#fff; background:#17366b; border:2px solid #fff8; border-radius:9px; padding:6px 9px; font-size:10px; font-weight:900; letter-spacing:.13em; }
+.cover-note { position:absolute; right:-2px; bottom:25px; transform:rotate(7deg); background:#ff5a3e; color:white; padding:9px 13px; border-radius:9px; font-weight:950; font-size:13px; box-shadow:0 8px 25px #0005; }
+.section { padding:66px 0; background:transparent; border-top:1px solid #f2c7dc; }
+.section-head { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:27px; }
+.kicker { color:#a83c72; font-size:11px; letter-spacing:.2em; font-weight:900; text-transform:uppercase; }
+h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-height:1.08; letter-spacing:-.05em; margin:9px 0 0; }
+.section-head p { color:#81536b; max-width:420px; line-height:1.65; margin:0; font-size:14px; }
+.feature { display:grid; grid-template-columns: .85fr 1.15fr; gap:24px; }
+.game-card { border:1px solid #f2c7dc; border-radius:22px; background:linear-gradient(180deg,#fff0f7,#ffffff); overflow:hidden; }
+.game-thumb { min-height:240px; padding:28px; display:flex; align-items:end; background:radial-gradient(circle at 70% 28%,#ffe36b 0 9%,transparent 10%),linear-gradient(155deg,#2fb8ed,#1966bd 48%,#ef9b31 49%,#e84b36); position:relative; }
+.game-thumb::before { content:"🍄"; font-size:90px; position:absolute; right:24px; top:23px; filter:drop-shadow(0 9px 6px #0004); }
+.game-thumb::after { content:"✦  ✦  ✦"; position:absolute; top:20px; left:25px; font-size:25px; color:#fff8; letter-spacing:15px; }
+.thumb-label { color:white; font-weight:1000; font-size:34px; letter-spacing:-.07em; text-shadow:0 3px 0 #17356c; z-index:1; }
+.thumb-label small { display:block; font-size:11px; letter-spacing:.22em; }
+.game-body { padding:24px; }
+.game-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:26px; }
+.game-list .game-thumb { min-height:175px; padding:20px; }
+.game-list .thumb-label { font-size:25px; }
+.game-list .game-body { padding:20px; }
+.game-list .game-body h3 { font-size:19px; }
+.game-list .game-thumb::before { font-size:66px; right:18px; top:18px; }
+.game-thumb.sonicmania { background:radial-gradient(circle at 72% 25%,#fff4a6 0 8%,transparent 9%),linear-gradient(145deg,#167fce,#e33b54 55%,#f2b52e); }
+.game-thumb.sonicmania::before { content:"🦔"; }
+.game-thumb.hollow { background:radial-gradient(circle at 72% 28%,#a9eaff 0 8%,transparent 9%),linear-gradient(145deg,#152e4e,#253b63 55%,#0c1729); }
+.game-thumb.hollow::before { content:"⚔️"; }
+.game-thumb.asphalt { background:radial-gradient(circle at 72% 25%,#ffdc8a 0 7%,transparent 8%),linear-gradient(145deg,#f18b31,#a93640 55%,#222a4b); }
+.game-thumb.asphalt::before { content:"🏎️"; }
+.game-thumb.zelda { background:radial-gradient(circle at 72% 25%,#fff1a8 0 8%,transparent 9%),linear-gradient(145deg,#48b8b1,#247d83 50%,#1a3756); }
+.game-thumb.zelda::before { content:"🗡️"; }
+.demo-note { color:#91a2bf; font-size:12px; line-height:1.6; margin:18px 0 0; }
+@media (max-width:760px) { .game-list { grid-template-columns:1fr 1fr; } }
+@media (max-width:500px) { .game-list { grid-template-columns:1fr; } }
+
+.game-body h3 { margin:0 0 10px; font-size:23px; letter-spacing:-.04em; }
+.game-body p { color:#b1bed4; font-size:14px; line-height:1.7; margin:0 0 18px; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.chip { font-size:11px; font-weight:800; padding:7px 10px; border:1px solid #e6a6c6; color:#8c4268; background:#fff0f7; border-radius:999px; }
+.chip.warn { color:#ffe4a2; border-color:#7b6333; background:#3b2e1b; }
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.info-box { border:1px solid #293a57; border-radius:18px; padding:22px; background:#111b2d; }
+.info-icon { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; font-size:21px; background:#1b3153; margin-bottom:16px; }
+.info-box h3 { margin:0 0 8px; font-size:17px; }
+.info-box p { color:#81536b; font-size:13px; line-height:1.65; margin:0 0 14px; }
+.text-link { color:#a83c72; font-size:13px; font-weight:850; }
+.discord { padding:45px; border-radius:26px; display:flex; align-items:center; justify-content:space-between; gap:30px; background:linear-gradient(120deg,#e77eaf,#f4bad6 65%,#fff0f7); border:1px solid #efb8d3; }
+.discord h2 { margin:0 0 10px; font-size:calc(clamp(27px,4vw,38px) * var(--site-heading-scale)); }
+.discord p { color:#75445e; margin:0; line-height:1.7; max-width:610px; font-size:14px; }
+.discord .btn { background:white; color:#a83c72; flex-shrink:0; }
+footer { border-top:1px solid #f2c7dc; padding:26px 0 35px; color:#956b81; font-size:12px; }
+.footer-row { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.footer-links { display:flex; gap:18px; flex-wrap:wrap; }
+.catalog-tools { margin:0 0 22px; padding:22px; border:1px solid #293a57; border-radius:20px; background:linear-gradient(180deg,#ffe6f1,#fff7fb); }
+.catalog-search { width:100%; padding:13px 15px; border:1px solid #354562; border-radius:12px; background:#ffffff; color:#63334d; font:inherit; outline-offset:3px; }
+.catalog-search::placeholder { color:#956b81; }
+.filter-label { display:block; color:#9ce8ff; font-size:11px; font-weight:900; letter-spacing:.15em; text-transform:uppercase; margin:18px 0 9px; }
+.filter-row { display:flex; flex-wrap:wrap; gap:8px; }
+.filter-chip { border:1px solid #e6a6c6; color:#8c4268; background:#fff0f7; border-radius:999px; padding:8px 12px; font:inherit; font-size:12px; font-weight:800; cursor:pointer; }
+.filter-chip[aria-pressed="true"] { background:#d94f91; border-color:#d94f91; color:#fff; }
+.catalog-status { color:#81536b; font-size:13px; margin:16px 0 0; }
+.catalog-empty { display:none; margin-top:16px; padding:22px; border:1px dashed #354562; border-radius:16px; color:#81536b; text-align:center; }
+.game-list > .game-card[hidden] { display:none !important; }
+.game-detail-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; margin-top:2px; border:1px solid #4c8cff; border-radius:11px; background:#246bfe; color:#fff; font:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+.game-detail-btn:hover { filter:brightness(1.12); transform:translateY(-1px); }
+.game-detail-overlay { position:fixed; inset:0; z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; background:#030713d9; backdrop-filter:blur(8px); overflow:auto; }
+.game-detail-overlay.open { display:flex; }
+.game-detail-panel { width:min(920px,100%); max-height:min(92vh,1000px); overflow:auto; border:1px solid #e6a6c6; border-radius:22px; background:#fff7fb; color:#63334d; box-shadow:0 30px 100px #000a; }
+.game-detail-top { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:20px 24px; border-bottom:1px solid #293a57; }
+.game-detail-top h2 { font-size:25px; margin:0; }
+.game-detail-close { border:1px solid #354562; border-radius:10px; background:#192843; color:white; font-size:22px; width:42px; height:42px; cursor:pointer; }
+.game-detail-content { padding:24px; }
+.game-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 0 24px; }
+.game-gallery figure { margin:0; min-width:0; }
+.game-gallery img { display:block; width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:12px; border:1px solid #354562; background:#172238; }
+.game-gallery figcaption { color:#9eacc6; font-size:11px; margin-top:7px; }
+.game-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.game-spec { padding:14px; border:1px solid #f2c7dc; border-radius:13px; background:#fff0f7; }
+.game-spec span { display:block; color:#93a4c1; font-size:11px; text-transform:uppercase; letter-spacing:.12em; margin-bottom:6px; }
+.game-spec strong { font-size:14px; }
+.game-detail-description { color:#81536b; line-height:1.7; font-size:14px; }
+.game-detail-note { color:#8c4268; border:1px solid #e6a6c6; background:#fff0f7; border-radius:12px; padding:12px 14px; font-size:12px; line-height:1.6; margin-top:16px; }
+@media(max-width:600px) { .game-gallery { grid-template-columns:1fr; } .game-gallery img { aspect-ratio:16/9; } .game-detail-content { padding:16px; } .game-detail-grid { grid-template-columns:1fr 1fr; } .game-detail-top { padding:16px; } }
+
+@media (max-width:760px) { .nav-links a:not(.nav-cta) { display:none; } .hero { padding:42px 0 48px; } .hero-grid { grid-template-columns:1fr; gap:12px; } .hero-copy { text-align:center; } .hero-copy p { margin-left:auto; margin-right:auto; } .actions { justify-content:center; } .game-art { min-height:315px; } .cover { width:265px; } .cover-sun { width:145px; height:145px; } .section { padding:48px 0; } .section-head { display:block; } .section-head p { margin-top:14px; } .feature { grid-template-columns:1fr; } .discord { padding:30px; flex-direction:column; align-items:flex-start; } }
+@media (max-width:500px) { .wrap { width:min(100% - 28px,1160px); } .nav { padding:16px 0; } .brand-name { font-size:15px; } .nav-cta { padding:10px 12px; font-size:12px; } .hero p { font-size:15px; } .game-art { min-height:285px; } .cover { width:235px; } .info-grid { grid-template-columns:1fr; } .discord { padding:24px; } .footer-row { flex-direction:column; align-items:flex-start; } }
+
+  .short-nav-button { position:absolute; top:50%; z-index:5; transform:translateY(-50%); display:flex; align-items:center; justify-content:center; width:46px; height:58px; border:1px solid #ffffffc9; border-radius:14px; background:#26152dcc; color:#fff; font-size:29px; font-weight:900; cursor:pointer; opacity:0; pointer-events:none; transition:opacity .18s,background .18s,transform .18s; box-shadow:0 4px 16px #0005; }
+  .short-nav-button.previous { left:15px; } .short-nav-button.next { right:15px; }
+  .gameplay-screen:hover .short-nav-button, .gameplay-screen:focus-within .short-nav-button { opacity:1; pointer-events:auto; }
+  .short-nav-button:hover { background:#d94f91f2; transform:translateY(-50%) scale(1.06); }
+  .short-nav-button:focus-visible { opacity:1; pointer-events:auto; outline:3px solid #fff; outline-offset:2px; }
+  @media (hover:none) { .short-nav-button { opacity:.92; pointer-events:auto; width:40px; height:50px; } }
+
+/* Paginación del catálogo y de novedades */
+.pagination { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:8px; margin:24px 0 8px; }
+.pagination button { min-width:42px; min-height:40px; padding:9px 13px; border:1px solid #dca6c2; border-radius:11px; background:#fff; color:#63334d; font:inherit; font-size:13px; font-weight:850; cursor:pointer; }
+.pagination button[aria-current="page"] { background:#d94f91; color:#fff; border-color:#d94f91; box-shadow:0 5px 14px #d94f9133; }
+.pagination button:disabled { opacity:.4; cursor:not-allowed; }
+.pagination .page-summary { width:100%; text-align:center; color:#7b5267; font-size:12px; margin-top:3px; }
+.game-list > .game-card[hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="wrap nav">
+    <a class="brand" href="#inicio" aria-label="Un Desastre Gaming, inicio"><span class="brand-mark">🎮</span><span class="brand-name">UN DESASTRE<span>GAMING</span></span></a>
+    <nav class="nav-links" aria-label="Navegación principal"><a href="#juegos">Juegos</a><a href="#sistemas">Sistemas</a><a href="#comunidad">Comunidad</a><a href="#recursos">Recursos</a><a class="nav-cta" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Entrar a Discord ↗</a></nav>
+  </header>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow"><span class="pulse"></span> Tu rincón gamer está acá</span>
+          <h1>Juegos, ports<br>y <span class="gradient">mucho caos.</span></h1>
+          <p>Bienvenidos a Un Desastre Gaming: novedades, consolas retro, pruebas en R36S y clones, gameplays y una comunidad para compartir la pasión por los videojuegos.</p>
+          <div class="actions"><a class="btn btn-primary" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Sumate al Discord</a><a class="btn btn-outline" href="#juegos">🎮 Explorar juegos</a></div>
+        </div>
+        <div class="console-stage video-stage" aria-label="Video de gameplay del canal Un Desastre Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de Un Desastre Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><button class="short-nav-button previous" id="short-previous" type="button" aria-label="Video anterior" title="Video anterior">‹</button><button class="short-nav-button next" id="short-next" type="button" aria-label="Video siguiente" title="Video siguiente">›</button><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
+      </div>
+    </section>
+    <section class="section" id="juegos">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">En portada</div><h2>Un juego para arrancar</h2></div><p>La idea es que cada juego tenga su propia ficha, información clara, imágenes y los enlaces de la comunidad en un solo lugar.</p></div>
+        <div class="feature">
+          <article class="game-card"><div class="game-thumb"><div class="thumb-label"><small>NEW SUPER</small>MARIO BROS. 2</div></div><div class="game-body"><h3>New Super Mario Bros. 2</h3><p>Una ficha de ejemplo para mostrar cómo se vería cada juego dentro de la web del canal, con su descripción y acceso a la comunidad.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Nintendo 3DS</span><span class="chip warn">Compatibilidad R36S sin verificar</span></div><a class="btn btn-primary" href="https://llabrapablo-prog.github.io/pagina-de-prueba-2/" target="_blank" rel="noopener noreferrer">Ver ficha actual ↗</a></div></article>
+          <div class="info-grid" id="recursos">
+            <article class="info-box"><div class="info-icon">🕹️</div><h3>Ports para R36S</h3><p>Novedades, pruebas y datos de ports para R36S y consolas similares, indicando en qué sistemas se probaron.</p><a class="text-link" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Ver enlaces en Discord ↗</a></article>
+            <article class="info-box"><div class="info-icon">💾</div><h3>Sistemas y tutoriales</h3><p>Guías para instalar sistemas, configurar tarjetas SD y resolver problemas frecuentes de las consolas.</p><a class="text-link" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Ir a la comunidad ↗</a></article>
+            <article class="info-box"><div class="info-icon">🎬</div><h3>Videos del canal</h3><p>Gameplays, pruebas, recomendaciones y videos nuevos de Un Desastre Gaming.</p><a class="text-link" href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA" target="_blank" rel="noopener noreferrer">Ver canal de YouTube ↗</a></article>
+            <article class="info-box"><div class="info-icon">🧩</div><h3>Fichas de juegos</h3><p>Una biblioteca ordenada por consola o categoría, con capturas, datos técnicos y enlaces relacionados.</p><a class="text-link" href="#juegos">Explorar la portada ↑</a></article>
+          </div>
+        </div>
+        <div class="section-head" style="margin-top:48px"><div><div class="kicker">Más ejemplos</div><h2>Así se verían más juegos</h2></div><p>Tarjetas de muestra para probar cómo se ve la portada con una biblioteca más completa.</p></div>
+        <div class="section-head" style="margin-top:34px"><div><div class="kicker">Novedades</div><h2>Últimos agregados</h2></div><p>Los juegos nuevos aparecerán aquí automáticamente según su fecha de incorporación al catálogo.</p></div>
+        <div class="game-list latest-games" id="latest-games" aria-live="polite"></div>
+        <nav class="pagination" id="latest-pagination" aria-label="Páginas de últimos juegos"></nav>
+        <div class="catalog-tools" id="catalog-tools" aria-label="Filtros de juegos">
+<label class="filter-label" for="catalog-search">Buscar por nombre</label><input class="catalog-search" id="catalog-search" type="search" placeholder="Ej.: Mario, Sonic, Zelda..." autocomplete="off">
+<span class="filter-label">Filtrar por género</span><div class="filter-row" id="genre-filters"><button class="filter-chip" type="button" data-genre="Todos" aria-pressed="true">Todos</button><button class="filter-chip" type="button" data-genre="Acción" aria-pressed="false">⚔️ Acción</button><button class="filter-chip" type="button" data-genre="Carreras" aria-pressed="false">🏎️ Carreras</button><button class="filter-chip" type="button" data-genre="RPG" aria-pressed="false">🧙 RPG</button><button class="filter-chip" type="button" data-genre="Lucha" aria-pressed="false">🥊 Lucha</button><button class="filter-chip" type="button" data-genre="Plataformas" aria-pressed="false">🪜 Plataformas</button><button class="filter-chip" type="button" data-genre="Aventura" aria-pressed="false">🗺️ Aventura</button></div>
+<p class="catalog-status" id="catalog-status" aria-live="polite">Mostrando juegos de ejemplo.</p><div class="catalog-empty" id="catalog-empty">No encontramos juegos con esos filtros. Probá con otra búsqueda.</div></div>
+        <div class="game-list">
+          <article class="game-card" data-added="2026-10-20"><div class="game-thumb sonicmania"><div class="thumb-label"><small>SEGA · 2017</small>SONIC MANIA</div></div><div class="game-body"><h3>Sonic Mania</h3><p>Una aventura de plataformas en 2D que recupera la velocidad, los escenarios y el estilo clásico de Sonic.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Acción</span><span class="chip">PC y consolas</span><span class="chip warn">Ejemplo agregado</span></div></div></article>
+          <article class="game-card"><div class="game-thumb hollow"><div class="thumb-label"><small>TEAM CHERRY</small>HOLLOW KNIGHT</div></div><div class="game-body"><h3>Hollow Knight</h3><p>Aventura de acción y exploración en un reino subterráneo lleno de secretos.</p><div class="chips"><span class="chip">Metroidvania</span><span class="chip">PC y consolas</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb asphalt"><div class="thumb-label"><small>GAMELOFT</small>ASPHALT 5</div></div><div class="game-body"><h3>Asphalt 5</h3><p>Un juego de carreras arcade con autos deportivos y circuitos variados.</p><div class="chips"><span class="chip">Carreras</span><span class="chip">Port de ejemplo</span><span class="chip warn">Compatibilidad según sistema</span></div></div></article>
+          <article class="game-card"><div class="game-thumb zelda"><div class="thumb-label"><small>NINTENDO</small>ZELDA</div></div><div class="game-body"><h3>The Legend of Zelda: The Wind Waker</h3><p>Aventura de exploración por islas y mares, con un estilo visual muy característico.</p><div class="chips"><span class="chip">Aventura</span><span class="chip">GameCube</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb mario-world"><div class="thumb-label"><small>NINTENDO</small>SUPER MARIO WORLD</div></div><div class="game-body"><h3>Super Mario World</h3><p>Plataformas clásico de Nintendo, ideal para una ficha con consola original y género.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">SNES</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb sonic"><div class="thumb-label"><small>SEGA</small>SONIC 2</div></div><div class="game-body"><h3>Sonic the Hedgehog 2</h3><p>Juego de plataformas veloz de SEGA, presentado como ejemplo visual de catálogo.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Mega Drive</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb street-fighter"><div class="thumb-label"><small>CAPCOM</small>STREET FIGHTER II</div></div><div class="game-body"><h3>Street Fighter II</h3><p>Juego de lucha para ilustrar cómo se mostrarían género y plataforma en cada ficha.</p><div class="chips"><span class="chip">Lucha</span><span class="chip">Arcade / SNES</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb mario-kart"><div class="thumb-label"><small>NINTENDO</small>MARIO KART 64</div></div><div class="game-body"><h3>Mario Kart 64</h3><p>Carreras de Nintendo para mostrar cómo se vería una ficha de juego por consola.</p><div class="chips"><span class="chip">Carreras</span><span class="chip">Nintendo 64</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb final-fantasy"><div class="thumb-label"><small>SQUARE</small>FINAL FANTASY VI</div></div><div class="game-body"><h3>Final Fantasy VI</h3><p>RPG de fantasía con una historia extensa, añadido como ejemplo de categoría.</p><div class="chips"><span class="chip">RPG</span><span class="chip">SNES</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+          <article class="game-card"><div class="game-thumb celeste"><div class="thumb-label"><small>INDIE</small>CELESTE</div></div><div class="game-body"><h3>Celeste</h3><p>Plataformas y precisión, incluido como ejemplo de cómo podría organizarse un catálogo moderno.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Indie</span><span class="chip warn">Ficha de ejemplo</span></div></div></article>
+        </div>
+        <nav class="pagination" id="catalog-pagination" aria-label="Páginas del catálogo"></nav>
+                <p class="demo-note">Estas tarjetas son ejemplos visuales para mostrar el diseño de la biblioteca. No representan enlaces de descarga ni una garantía de compatibilidad con cada consola.</p>
+        <div class="game-detail-overlay" id="game-detail-overlay" role="dialog" aria-modal="true" aria-labelledby="game-detail-title">
+          <div class="game-detail-panel">
+            <div class="game-detail-top"><h2 id="game-detail-title">Ficha del juego</h2><button class="game-detail-close" type="button" id="game-detail-close" aria-label="Cerrar ficha">×</button></div>
+            <div class="game-detail-content" id="game-detail-content"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="sistemas">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Sistemas</div><h2>Sistemas para explorar</h2></div><p>Tres fichas de ejemplo para mostrar cómo se organizarán las guías, la información y los recursos de cada sistema. La compatibilidad depende del modelo de consola y de la imagen utilizada.</p></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px">
+          <article class="game-card"><div style="min-height:170px;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#4ade80 0 10%,transparent 11%),linear-gradient(145deg,#102f2c,#176b55 55%,#091b25);font-size:60px">🌿</div><div class="game-body"><h3>DarkOS</h3><p>Ficha de ejemplo para presentar el sistema, notas de instalación y archivos necesarios según el modelo de consola.</p><div class="chips"><span class="chip">Sistema</span><span class="chip">R36S y clones</span><span class="chip warn">Guía de ejemplo</span></div></div></article>
+          <article class="game-card"><div style="min-height:170px;display:grid;place-items:center;background:linear-gradient(145deg,#162b57,#2367b2 55%,#10172d);font-size:60px">🛠️</div><div class="game-body"><h3>ArkOS</h3><p>Ejemplo de ficha para tutoriales de instalación, configuración de tarjetas SD y uso de ports.</p><div class="chips"><span class="chip">Sistema</span><span class="chip">Consolas retro</span><span class="chip warn">Guía de ejemplo</span></div></div></article>
+          <article class="game-card"><div style="min-height:170px;display:grid;place-items:center;background:linear-gradient(145deg,#3b1d5a,#8b5cf6 55%,#15152d);font-size:60px">💿</div><div class="game-body"><h3>AmberELEC</h3><p>Ejemplo de cómo mostrar descripción, dispositivos compatibles y recursos de instalación para otro sistema.</p><div class="chips"><span class="chip">Sistema</span><span class="chip">Linux retro</span><span class="chip warn">Compatibilidad por verificar</span></div></div></article>
+        </div>
+        <p class="section-head" style="margin-top:18px;font-size:12px;color:#aebbd3">Estas fichas son demostrativas; no incluyen imágenes de sistema ni enlaces de descarga.</p>
+      </div>
+    </section>
+    <section class="section" id="comunidad" style="padding-top:0">
+      <div class="wrap"><div class="discord"><div><h2>El desastre se disfruta en comunidad.</h2><p>Entrá al Discord para encontrar los enlaces de los ports, charlar con otros jugadores y seguir las novedades del canal. La web organiza la información; Discord reúne a la comunidad.</p></div><a class="btn" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Entrar al Discord ↗</a></div></div>
+    </section>
+  </main>
+  <footer><div class="wrap footer-row"><span>© Un Desastre Gaming · Hecho para la comunidad gamer.</span><div class="footer-links"><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Discord</a><a href="https://llabrapablo-prog.github.io/pagina-de-prueba-2/" target="_blank" rel="noopener noreferrer">Ficha de ejemplo</a></div></div></footer>
+</div>
+
+<script>
+(() => {
+ const grid=document.querySelector('#juegos .game-list'); if(!grid)return;
+ const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
+ const latestGrid=document.getElementById('latest-games'), latestPagination=document.getElementById('latest-pagination'), catalogPagination=document.getElementById('catalog-pagination');
+ const pageSize=6, latestPageSize=3;
+ cards.filter(card=>card.dataset.added).sort((a,b)=>b.dataset.added.localeCompare(a.dataset.added)).forEach(card=>latestGrid?.appendChild(card.cloneNode(true)));
+ let genre='Todos', catalogPage=1, latestPage=1;
+ const norm=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ function renderPagination(container,totalPages,page,onPageChange,label){
+  if(!container)return; container.replaceChildren();
+  if(totalPages<=1){container.hidden=true;return;} container.hidden=false;
+  const addButton=(text,next,disabled=false,current=false)=>{const button=document.createElement('button');button.type='button';button.textContent=text;button.disabled=disabled;if(current)button.setAttribute('aria-current','page');button.addEventListener('click',()=>onPageChange(next));container.appendChild(button);};
+  addButton('‹ Anterior',page-1,page===1);
+  for(let i=1;i<=totalPages;i++)addButton(String(i),i,false,i===page);
+  addButton('Siguiente ›',page+1,page===totalPages);
+  const summary=document.createElement('span');summary.className='page-summary';summary.textContent=label+' '+page+' de '+totalPages;container.appendChild(summary);
+ }
+ function applyFilters(){
+  const query=norm(search.value.trim());
+  const filtered=cards.filter(card=>{const name=card.querySelector('h3')?.textContent.trim()||'';const tags=[...card.querySelectorAll('.chips .chip')].map(chip=>norm(chip.textContent));return (!query||norm(name).includes(query))&&(genre==='Todos'||tags.some(tag=>tag.includes(norm(genre))));});
+  const pages=Math.max(1,Math.ceil(filtered.length/pageSize));catalogPage=Math.min(catalogPage,pages);cards.forEach(card=>{card.hidden=true;});
+  filtered.forEach((card,index)=>{card.hidden=index<(catalogPage-1)*pageSize||index>=catalogPage*pageSize;});
+  const first=filtered.length?(catalogPage-1)*pageSize+1:0;status.textContent='Mostrando '+first+'–'+Math.min(catalogPage*pageSize,filtered.length)+' de '+filtered.length+' juegos filtrados ('+cards.length+' en total).';
+  empty.style.display=filtered.length?'none':'block';
+  renderPagination(catalogPagination,pages,catalogPage,next=>{catalogPage=next;applyFilters();document.getElementById('juegos')?.scrollIntoView({behavior:'smooth',block:'start'});},'Página');
+ }
+ function renderLatest(){if(!latestGrid)return;const latest=[...latestGrid.querySelectorAll(':scope > .game-card')];const pages=Math.max(1,Math.ceil(latest.length/latestPageSize));latestPage=Math.min(latestPage,pages);latest.forEach((card,index)=>{card.hidden=index<(latestPage-1)*latestPageSize||index>=latestPage*latestPageSize;});renderPagination(latestPagination,pages,latestPage,next=>{latestPage=next;renderLatest();latestGrid.scrollIntoView({behavior:'smooth',block:'center'});},'Página de novedades');}
+ document.querySelectorAll('#genre-filters [data-genre]').forEach(button=>button.addEventListener('click',()=>{genre=button.dataset.genre;catalogPage=1;document.querySelectorAll('#genre-filters [data-genre]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));applyFilters();}));
+ search.addEventListener('input',()=>{catalogPage=1;applyFilters();});
+ applyFilters();renderLatest();
+})();
+</script>
+
+<script>
+(() => {
+  const details = {
+    "New Super Mario Bros. 2": {year:"2012",developer:"Nintendo",platform:"Nintendo 3DS",genre:"Plataformas",description:"Aventura de plataformas en 2D con Mario, niveles clásicos y monedas como elemento central.",note:"La compatibilidad con R36S no está verificada. Las imágenes de esta ficha son ilustrativas y deben reemplazarse por capturas reales de gameplay."},
+    "Sonic Mania": {year:"2017",developer:"PagodaWest Games y Headcannon; publicado por SEGA",platform:"PC, Nintendo Switch, PlayStation 4 y Xbox One",genre:"Plataformas / Acción",description:"Juego de plataformas en 2D inspirado en la etapa clásica de Sonic, con escenarios renovados, rutas alternativas y velocidad.",note:"Ficha de ejemplo. La compatibilidad depende de la plataforma y del sistema; no se afirma compatibilidad con R36S."},
+    "Hollow Knight": {year:"2017",developer:"Team Cherry",platform:"PC y consolas; port depende del sistema",genre:"Acción / metroidvania",description:"Exploración, combate y descubrimiento en un reino subterráneo dibujado a mano.",note:"El funcionamiento del port depende de la versión y del sistema instalado en la consola."},
+    "Asphalt 5": {year:"2009",developer:"Gameloft",platform:"Móviles y otras plataformas; port",genre:"Carreras",description:"Carreras arcade con coches deportivos, circuitos urbanos y pruebas rápidas.",note:"El rendimiento puede variar según el port y el sistema. Conviene indicar en qué sistema se probó."},
+    "The Legend of Zelda: The Wind Waker": {year:"2002 (GameCube)",developer:"Nintendo",platform:"Nintendo GameCube",genre:"Aventura",description:"Aventura de acción y exploración en un mundo de islas y navegación marítima.",note:"La ficha describe el juego original; no garantiza que funcione en R36S ni en todos los sistemas."},
+    "Super Mario World": {year:"1990 (Japón)",developer:"Nintendo",platform:"Super Nintendo (SNES)",genre:"Plataformas",description:"Un clásico de plataformas en 2D con exploración de niveles, secretos y la primera aparición de Yoshi.",note:"La consola original es SNES; la experiencia depende del emulador y de la configuración."},
+    "Sonic the Hedgehog 2": {year:"1992",developer:"SEGA",platform:"Mega Drive / Genesis",genre:"Plataformas",description:"Plataformas de ritmo rápido con Sonic y Tails, niveles con rutas alternativas y anillos.",note:"La consola original es Mega Drive/Genesis; la compatibilidad depende del emulador."},
+    "Street Fighter II": {year:"1991 (arcade)",developer:"Capcom",platform:"Arcade; también tuvo versiones domésticas",genre:"Lucha",description:"Juego de lucha competitivo con personajes distintivos, movimientos especiales y combates uno contra uno.",note:"Existen varias ediciones y versiones; la ficha corresponde a la serie original, no a una edición específica."},
+    "Mario Kart 64": {year:"1996 (Japón)",developer:"Nintendo",platform:"Nintendo 64",genre:"Carreras",description:"Carreras de karts con objetos, circuitos variados y multijugador local.",note:"La ficha corresponde al juego original de Nintendo 64; el rendimiento depende del emulador."},
+    "Final Fantasy VI": {year:"1994",developer:"Square",platform:"Super Nintendo (SNES)",genre:"RPG",description:"RPG por turnos con un amplio elenco, magia, exploración y una historia de fantasía.",note:"Existen distintas versiones del juego; la ficha corresponde al lanzamiento original de SNES."},
+    "Celeste": {year:"2018",developer:"Matt Makes Games / Extremely OK Games",platform:"PC y consolas",genre:"Plataformas",description:"Plataformas de precisión sobre escalar una montaña, con controles ajustados y una historia personal.",note:"Esta ficha no afirma compatibilidad con R36S; el juego original no es un port Linux genérico."}
+  };
+  const overlay=document.getElementById('game-detail-overlay');
+  const content=document.getElementById('game-detail-content');
+  const title=document.getElementById('game-detail-title');
+  const close=document.getElementById('game-detail-close');
+  const escapeHTML=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  document.querySelectorAll('#juegos .game-card').forEach(card=>{
+    const heading=card.querySelector('h3');
+    if(!heading)return;
+    const name=heading.textContent.trim();
+    const body=card.querySelector('.game-body');
+    if(!body || body.querySelector('.game-detail-btn'))return;
+    const button=document.createElement('button');
+    button.type='button';button.className='game-detail-btn';button.textContent='Ver ficha completa ↗';
+    button.addEventListener('click',()=>{
+      const data=details[name]||{year:'Por confirmar',developer:'Por confirmar',platform:'Ver etiquetas de la ficha',genre:'Ver etiquetas de la ficha',description:body.querySelector('p')?.textContent||'Información pendiente.',note:'Ficha en desarrollo. Verificar los datos técnicos y agregar capturas reales antes de publicar como información definitiva.'};
+      const genre=data.genre;
+      const thumb=card.querySelector('.game-thumb');
+      const styleClass=[...(thumb?.classList||[])].filter(c=>c!=='game-thumb').join(' ');
+      const labels=['Vista general','Escena de juego','Otra captura'];
+      title.textContent=name;
+      content.innerHTML='<div class="game-gallery">'+labels.map((label,index)=>'<figure><div class="game-gallery-art '+escapeHTML(styleClass)+'" role="img" aria-label="'+escapeHTML(label+' ilustrativa de '+name)+'" style="aspect-ratio:16/10;border-radius:12px;border:1px solid #354562;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#173b6a,#172238 55%,#55344b);font-size:40px">'+(index===0?'🎮':index===1?'🕹️':'✨')+'</div><figcaption>'+label+' · ilustración provisional</figcaption></figure>').join('')+'</div>'+
+      '<p class="game-detail-description">'+escapeHTML(data.description)+'</p><div class="game-detail-grid">'+[['Lanzamiento',data.year],['Desarrollador',data.developer],['Plataforma original',data.platform],['Género',genre]].map(([label,value])=>'<div class="game-spec"><span>'+escapeHTML(label)+'</span><strong>'+escapeHTML(value)+'</strong></div>').join('')+'</div><div class="game-detail-note">'+escapeHTML(data.note)+'</div>';
+      overlay.classList.add('open');document.body.style.overflow='hidden';close.focus();
+    });
+    body.appendChild(button);
+  });
+  function dismiss(){overlay.classList.remove('open');document.body.style.overflow='';}
+  close.addEventListener('click',dismiss);
+  overlay.addEventListener('click',event=>{if(event.target===overlay)dismiss();});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&overlay.classList.contains('open'))dismiss();});
+})();
+</script>
+
+<script>
+(() => {
+  const screen = document.getElementById('gameplay-rotator');
+  if (!screen) return;
+  const shorts = [
+    'jZEHH0i2VqQ',
+    '3pSBb6J_s7k',
+    'CAuxNqfQoBU',
+    '_v69ih1duJA',
+    'q-Oi---gMH0',
+    'VMLnNBFwzus',
+    '1F_pCbtsuVE',
+    'AwrKZ1Wgo2w',
+    'ijvdR4dkQUY',
+    'EvRUf0coR-k',
+    'bjOG8T4Kuwk'
+  ];
+  let current = 0;
+  let rotateTimer;
+  const showShort = index => {
+    current = (index + shorts.length) % shorts.length;
+    const id = shorts[current];
+    screen.src = 'https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&mute=1&controls=1&start=0&end=59&playsinline=1&rel=0';
+    screen.title = 'Short de gameplay ' + (current + 1) + ' de ' + shorts.length + ' · Un Desastre Gaming';
+    const likeLink = document.getElementById('short-like-link');
+    if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
+    window.clearTimeout(rotateTimer);
+    rotateTimer = window.setTimeout(() => showShort(current + 1), 59000);
+  };
+  document.getElementById('short-previous')?.addEventListener('click', () => showShort(current - 1));
+  document.getElementById('short-next')?.addEventListener('click', () => showShort(current + 1));
+  showShort(0);
+})();
+</script>
+
+</body>
+</html>
