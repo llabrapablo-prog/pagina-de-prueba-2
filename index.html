@@ -285,7 +285,7 @@ footer { border-top:1px solid #343B34; padding:26px 0 35px; color:#A7B0A0; font-
 
 <script>
 (() => {
- const grid=document.querySelector('#juegos .game-list'); if(!grid)return;
+ const grid=document.querySelector('#juegos .wrap > .game-list:not(#latest-games)'); if(!grid)return;
  const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
  const latestGrid=document.getElementById('latest-games'), latestPagination=document.getElementById('latest-pagination'), catalogPagination=document.getElementById('catalog-pagination');
  const pageSize=6, latestPageSize=3;
