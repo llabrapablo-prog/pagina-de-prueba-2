@@ -55,6 +55,15 @@ h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px)
 .gradient { background:linear-gradient(90deg,#69dfff,#a4b7ff 60%,#ff947d); -webkit-background-clip:text; background-clip:text; color:transparent; }
 .hero p { color:#C7D2BC; font-size:17px; line-height:1.7; max-width:540px; margin:0 0 27px; }
 .actions { display:flex; flex-wrap:wrap; gap:12px; }
+.gamer-poem { position:relative; margin-top:30px; max-width:650px; padding:25px 28px 23px; overflow:hidden; border:1px solid #A6FF0060; border-radius:22px; background:radial-gradient(ellipse at 0 0,#A6FF0018,transparent 60%),linear-gradient(135deg,#1b2020f5,#111315f7); box-shadow:0 18px 42px #0006,inset 0 0 28px #A6FF0008; }
+.gamer-poem::before { content:""; position:absolute; top:0; left:28px; right:28px; height:2px; background:linear-gradient(90deg,transparent,#A6FF00,#eaffb8,#A6FF00,transparent); }
+.gamer-poem-label { margin-bottom:10px; color:#A6FF00; font-size:10px; font-weight:900; letter-spacing:.2em; text-transform:uppercase; }
+.gamer-poem h2 { margin:0 0 16px; color:#F2FFD9; font-family:var(--site-font-heading); font-size:clamp(23px,2.5vw,32px); line-height:1.12; letter-spacing:-.035em; text-shadow:0 0 22px #A6FF0025; }
+.hero .gamer-poem p { margin:0; color:#E3EAD9; font-family:Georgia,"Times New Roman",serif; font-size:clamp(14px,1.25vw,17px); line-height:1.75; letter-spacing:.01em; }
+.gamer-poem em { color:#D7FF87; font-style:italic; font-weight:700; }
+.poem-divider { display:flex; align-items:center; gap:12px; margin:14px 0; color:#A6FF00; font-size:13px; }
+.poem-divider::before,.poem-divider::after { content:""; height:1px; flex:1; background:linear-gradient(90deg,transparent,#A6FF0066); }
+.poem-divider::after { transform:scaleX(-1); }
 .btn { display:inline-flex; justify-content:center; align-items:center; gap:10px; padding:14px 19px; border-radius:13px; font-size:14px; font-weight:850; transition:transform .18s,filter .18s; }
 .btn:hover { transform:translateY(-2px); filter:brightness(1.08); }
 .btn-primary { background:var(--site-primary); color:white; box-shadow:0 10px 28px #246bfe40; }
@@ -323,6 +332,13 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
           <h1>Juegos, ports<br>y <span class="gradient">mucho caos.</span></h1>
           <p>Bienvenidos a 1DSAS3 Gaming: novedades, consolas retro, pruebas en R36S y clones, gameplays y una comunidad para compartir la pasión por los videojuegos.</p>
           <div class="actions"><a class="btn btn-primary" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Sumate al Discord</a><a class="btn btn-outline" href="#ports">🎮 Explorar ports</a></div>
+          <aside class="gamer-poem" aria-label="Poema homenaje a los gamers">
+            <div class="gamer-poem-label">✦ UN HOMENAJE A NUESTRA HISTORIA ✦</div>
+            <h2>Cuando jugar era soñar</h2>
+            <p>Con monedas en los bolsillos,<br>en las recreativas comenzó el viaje,<br>cada partida era un desafío,<br>cada victoria, un homenaje.</p>
+            <div class="poem-divider" aria-hidden="true">✦ 🎮 ✦</div>
+            <p>Después llegaron las consolas,<br>los juegos de computadora,<br>las noches que se hicieron cortas<br>y el famoso: <em>«¡Una partida más y me voy ahora!»</em></p>
+          </aside>
         </div>
         <div class="console-stage video-stage" aria-label="Video de gameplay del canal 1DSAS3 Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de 1DSAS3 Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><button class="short-nav-button previous" id="short-previous" type="button" aria-label="Video anterior" title="Video anterior">‹</button><button class="short-nav-button next" id="short-next" type="button" aria-label="Video siguiente" title="Video siguiente">›</button><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
       </div>
