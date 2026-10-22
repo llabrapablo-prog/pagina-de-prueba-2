@@ -283,6 +283,19 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 
 /* Radio Pixel retro flotante */
 #pixel-radio{position:fixed;right:20px;bottom:20px;z-index:9998;width:260px;max-width:calc(100vw - 28px);padding:13px;border:1px solid #A6FF00;border-radius:12px;background:#111315;color:#edf7e4;box-shadow:0 8px 28px #000b;font-family:Inter,Arial,sans-serif}#pixel-radio .pr-title{color:#A6FF00;font-weight:900;font-size:12px;letter-spacing:.08em}#pixel-radio .pr-sub{font-size:10px;color:#aab3a3;margin:4px 0 12px}#pixel-radio .pr-track{padding:10px;background:#090b0c;border-radius:7px;margin-bottom:10px}#pixel-radio .pr-name{font-weight:800;font-size:12px}#pixel-radio .pr-kind{font-size:10px;color:#aab3a3;margin-top:4px}#pixel-radio .pr-controls{display:flex;gap:7px}#pixel-radio button{cursor:pointer;border:1px solid #46503d;border-radius:7px;background:#20251f;color:#eff7e8;padding:8px 10px}#pixel-radio #pr-play{flex:1;background:#A6FF00;color:#111315;font-weight:900;border-color:#A6FF00}#pixel-radio .pr-vol{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:11px;color:#aab3a3}#pixel-radio input{width:100%;accent-color:#A6FF00}#pixel-radio .pr-status{float:right;color:#A6FF00;font-size:9px}@media(max-width:520px){#pixel-radio{right:12px;bottom:12px;width:235px}}
+
+/* Votación por estrellas — prototipo de la página de prueba */
+.community-rating{margin:10px 0 12px;padding:10px 12px;border:1px solid #35402A;border-radius:12px;background:#111815}
+.community-rating-label{display:block;color:#C7D2BC;font-size:12px;font-weight:800;margin-bottom:7px}
+.community-stars{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.community-star{border:0;background:transparent;color:#64705D;padding:2px;font-size:24px;line-height:1;cursor:pointer;transition:transform .12s,color .12s}
+.community-star:hover,.community-star:focus-visible{color:#A6FF00;transform:scale(1.12)}
+.community-star.is-active{color:#A6FF00}
+.community-rating-summary{display:block;color:#A7B0A0;font-size:11px;margin-top:6px}
+.community-vote-notice{color:#D9E8C9;font-size:12px;line-height:1.5;margin:10px 0 0}
+#community-favorite-card .community-rating{margin-top:12px}
+#community-favorite-card .community-favorite-empty{padding:22px;border:1px dashed #35402A;border-radius:16px;color:#C7D2BC;text-align:center}
+
 </style>
 </head>
 <body>
@@ -308,7 +321,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
       <div class="wrap">
         <div class="section-head"><div><div class="kicker">🏆 Elección de la comunidad</div><h2>Juego favorito votado por la comunidad de esta semana</h2></div><p>La idea es que cada juego tenga su propia ficha, información clara, imágenes y los enlaces de la comunidad en un solo lugar.</p></div>
         <div class="feature">
-          <article class="game-card"><div class="game-thumb"><div class="thumb-label"><small>NEW SUPER</small>MARIO BROS. 2</div></div><div class="game-body"><h3>New Super Mario Bros. 2</h3><p>Una ficha de ejemplo para mostrar cómo se vería cada juego dentro de la web del canal, con su descripción y acceso a la comunidad.</p><div class="chips"><span class="chip">Plataforma original: Nintendo 3DS</span><span class="chip">Género: Plataformas</span><span class="chip">Consola: R36S</span><span class="chip warn">Compatibilidad R36S sin verificar</span></div><a class="btn btn-primary" href="https://llabrapablo-prog.github.io/pagina-de-prueba-2/" target="_blank" rel="noopener noreferrer">Ver ficha actual ↗</a></div></article>
+          <article class="game-card" id="community-favorite-card"><div class="game-body"><h3>🏆 Juego favorito de la comunidad</h3><p id="community-favorite-intro">El juego mejor valorado por promedio de estrellas aparecerá aquí automáticamente.</p><div id="community-favorite-content" aria-live="polite"><div class="community-favorite-empty">Todavía no hay votos. ¡Sé el primero en puntuar un juego en el catálogo!</div></div><p class="community-vote-notice">⚠️ Modo de prueba: las puntuaciones se guardan en este navegador. Para que los votos de todos los visitantes se sumen en un ranking común, falta conectar una base de datos compartida.</p></div></article>
           <div class="info-grid" id="recursos">
             <article class="info-box"><div class="info-icon">🕹️</div><h3>Ports para R36S</h3><p>Novedades, pruebas y datos de ports para R36S y consolas similares, indicando en qué sistemas se probaron.</p><a class="text-link" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Ver enlaces en Discord ↗</a></article>
             <article class="info-box"><div class="info-icon">💾</div><h3>Sistemas y tutoriales</h3><p>Guías para instalar sistemas, configurar tarjetas SD y resolver problemas frecuentes de las consolas.</p><a class="text-link" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Ir a la comunidad ↗</a></article>
@@ -775,5 +788,140 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 <script>
 (() => {const box=document.getElementById('pixel-radio');if(!box)return;const songs=[{n:'01 · Pixel Adventure',b:132,a:[659,784,988,784,659,523,587,659,784,659,523,392,440,523,587,523]},{n:'02 · Neon Racer',b:148,a:[392,392,523,659,587,523,440,440,523,587,784,659,587,523,392,330]},{n:'03 · Boss Battle',b:116,a:[220,220,330,294,220,196,247,220,330,392,349,294,247,220,196,165]}];let ix=0,ni=0,ctx=null,gain=null,timer=null,on=false;const play=document.getElementById('pr-play'),stat=document.getElementById('pr-status'),name=document.getElementById('pr-name'),vol=document.getElementById('pr-volume');function draw(){name.textContent=songs[ix].n}function note(){if(!on||!ctx)return;const s=songs[ix],now=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain(),f=s.a[ni++%s.a.length],d=60/s.b;o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.09,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+d*.7);o.connect(g);g.connect(gain);o.start(now);o.stop(now+d*.72)}async function start(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){stat.textContent='AUDIO NO DISPONIBLE';return}if(!ctx){ctx=new AC();gain=ctx.createGain();gain.gain.value=+vol.value/100;gain.connect(ctx.destination)}await ctx.resume();on=true;stat.textContent='EN VIVO';play.textContent='Ⅱ PAUSAR';if(timer)clearInterval(timer);note();timer=setInterval(note,60000/songs[ix].b)}function pause(){on=false;if(timer)clearInterval(timer);timer=null;if(ctx)ctx.suspend();stat.textContent='EN PAUSA';play.textContent='▶ REPRODUCIR'}play.addEventListener('click',()=>on?pause():start());function change(d){ix=(ix+d+songs.length)%songs.length;ni=0;draw();if(on)start()}document.getElementById('pr-prev').addEventListener('click',()=>change(-1));document.getElementById('pr-next').addEventListener('click',()=>change(1));vol.addEventListener('input',()=>{if(gain&&ctx)gain.gain.setTargetAtTime(+vol.value/100,ctx.currentTime,.03)});draw()})();
 </script>
+
+<script>
+(() => {
+  const catalog = document.querySelector('#ports .game-list');
+  const featured = document.getElementById('community-favorite-content');
+  if (!catalog || !featured) return;
+
+  const storageKey = '1dsas3-community-ratings-v1';
+  const normalize = value => String(value).normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().trim();
+  const getName = card => card.querySelector('.game-body h3')?.textContent.trim() || '';
+  const readRatings = () => {
+    try {
+      const value = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      return value && typeof value === 'object' ? value : {};
+    } catch (_) { return {}; }
+  };
+  let ratings = readRatings();
+
+  function ratingBlock(name) {
+    const key = normalize(name);
+    const current = Number(ratings[key] || 0);
+    const wrap = document.createElement('div');
+    wrap.className = 'community-rating';
+    wrap.dataset.ratingKey = key;
+    const label = document.createElement('span');
+    label.className = 'community-rating-label';
+    label.textContent = '¿Cuántas estrellas le das?';
+    const stars = document.createElement('div');
+    stars.className = 'community-stars';
+    stars.setAttribute('role', 'group');
+    stars.setAttribute('aria-label', 'Puntuar ' + name);
+    for (let n = 1; n <= 5; n++) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'community-star' + (n <= current ? ' is-active' : '');
+      button.textContent = '★';
+      button.setAttribute('aria-label', n + (n === 1 ? ' estrella' : ' estrellas'));
+      button.setAttribute('aria-pressed', String(current === n));
+      button.dataset.ratingValue = String(n);
+      stars.appendChild(button);
+    }
+    const summary = document.createElement('span');
+    summary.className = 'community-rating-summary';
+    summary.textContent = current ? 'Tu voto: ' + current + '/5 · promedio local' : 'Sin voto en este navegador';
+    wrap.append(label, stars, summary);
+    return wrap;
+  }
+
+  function installRating(card) {
+    if (card.id === 'community-favorite-card' || card.querySelector('.community-rating')) return;
+    const body = card.querySelector('.game-body');
+    const name = getName(card);
+    if (!body || !name) return;
+    const block = ratingBlock(name);
+    const detailButton = body.querySelector('.game-detail-btn');
+    if (detailButton) body.insertBefore(block, detailButton);
+    else body.appendChild(block);
+  }
+
+  function updateAllRatingBlocks() {
+    document.querySelectorAll('.game-card').forEach(card => {
+      if (card.id === 'community-favorite-card') return;
+      const name = getName(card);
+      const block = card.querySelector('.community-rating');
+      if (!name || !block) return;
+      const replacement = ratingBlock(name);
+      block.replaceWith(replacement);
+    });
+  }
+
+  function renderFavorite() {
+    const cards = [...catalog.querySelectorAll(':scope > .game-card')];
+    const games = cards.map(card => {
+      const name = getName(card);
+      const score = Number(ratings[normalize(name)] || 0);
+      return { card, name, score, body: card.querySelector('.game-body'), thumb: card.querySelector('.game-thumb') };
+    }).filter(game => game.name && game.score > 0);
+    games.sort((a,b) => b.score - a.score || a.name.localeCompare(b.name, 'es'));
+    if (!games.length) {
+      featured.innerHTML = '<div class="community-favorite-empty">Todavía no hay votos. ¡Sé el primero en puntuar un juego en el catálogo!</div>';
+      return;
+    }
+    const winner = games[0];
+    const description = winner.body?.querySelector('p')?.textContent || 'Juego destacado por la comunidad.';
+    const chips = winner.body?.querySelector('.chips')?.cloneNode(true);
+    const art = winner.thumb?.cloneNode(true);
+    featured.replaceChildren();
+    const card = document.createElement('article');
+    card.className = 'game-card community-winner-card';
+    if (art) card.appendChild(art);
+    const body = document.createElement('div');
+    body.className = 'game-body';
+    const heading = document.createElement('h3');
+    heading.textContent = winner.name;
+    const average = document.createElement('p');
+    average.textContent = '★ ' + winner.score.toFixed(1) + '/5 · promedio de las puntuaciones guardadas en este navegador';
+    const desc = document.createElement('p');
+    desc.textContent = description;
+    body.append(heading, average, desc);
+    if (chips) body.appendChild(chips);
+    const jump = document.createElement('a');
+    jump.className = 'btn btn-primary';
+    jump.href = '#ports';
+    jump.textContent = 'Ir al catálogo para votar ↗';
+    body.appendChild(jump);
+    card.appendChild(body);
+    featured.appendChild(card);
+  }
+
+  function vote(name, value) {
+    ratings[normalize(name)] = value;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(ratings));
+    } catch (_) {
+      const intro = document.getElementById('community-favorite-intro');
+      if (intro) intro.textContent = 'El navegador no permitió guardar la puntuación.';
+    }
+    updateAllRatingBlocks();
+    renderFavorite();
+  }
+
+  document.querySelectorAll('.game-card').forEach(installRating);
+  renderFavorite();
+
+  document.addEventListener('click', event => {
+    const button = event.target.closest('.community-star');
+    if (!button) return;
+    const card = button.closest('.game-card');
+    if (!card || card.id === 'community-favorite-card') return;
+    const name = getName(card);
+    if (name) vote(name, Number(button.dataset.ratingValue));
+  });
+})();
+</script>
+
 </body>
 </html>
