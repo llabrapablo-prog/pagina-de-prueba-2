@@ -258,6 +258,15 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   .gameplay-wrap.is-floating { position: relative; top: auto; right: auto; width: min(390px,100%) !important; }
 }
 
+
+.responsibility-notice { display:grid; grid-template-columns:52px minmax(0,1fr); gap:18px; padding:26px; border:1px solid #6b5b2c; border-radius:20px; background:linear-gradient(145deg,#211f18,#171B1E 72%); }
+.responsibility-icon { width:48px; height:48px; display:grid; place-items:center; border-radius:14px; background:#342b16; font-size:24px; }
+.responsibility-notice .kicker { margin:0; color:#ffd166; }
+.responsibility-notice h2 { margin:8px 0 14px; font-size:clamp(24px,3vw,32px); }
+.responsibility-notice p:not(.kicker) { color:#D5D8CF; font-size:13px; line-height:1.75; margin:0 0 12px; }
+.responsibility-notice .responsibility-last { color:#ffd166 !important; font-weight:700; margin-bottom:0 !important; }
+@media(max-width:560px) { .responsibility-notice { grid-template-columns:1fr; padding:20px; } }
+
 </style>
 </head>
 <body>
@@ -334,7 +343,23 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
       <div class="wrap"><div class="discord"><div><h2>El desastre se disfruta en comunidad.</h2><p>Entrá al Discord para encontrar los enlaces de los ports, charlar con otros jugadores y seguir las novedades del canal. La web organiza la información; Discord reúne a la comunidad.</p></div><a class="btn" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Entrar al Discord ↗</a></div></div>
     </section>
   </main>
-  <footer><div class="wrap footer-row"><span>© 1DSAS3 Gaming · Hecho para la comunidad gamer.</span><div class="footer-links"><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Discord</a><a href="https://llabrapablo-prog.github.io/pagina-de-prueba-2/" target="_blank" rel="noopener noreferrer">Ficha de ejemplo</a></div></div></footer>
+  
+<section class="section" id="aviso-responsabilidad" aria-labelledby="aviso-title">
+  <div class="wrap">
+    <div class="responsibility-notice">
+      <div class="responsibility-icon" aria-hidden="true">⚠️</div>
+      <div>
+        <p class="kicker">Importante antes de seguir un tutorial</p>
+        <h2 id="aviso-title">Aviso de responsabilidad</h2>
+        <p>Los tutoriales de <strong>Un Desastre Gaming</strong> se ofrecen con fines informativos y educativos. Cada usuario decide si realiza los procedimientos y es responsable de seguirlos con cuidado, comprobar que sean adecuados para su modelo de consola y realizar previamente las copias de seguridad necesarias.</p>
+        <p>Un Desastre Gaming no se responsabiliza por daños, fallas, pérdida de datos, problemas de funcionamiento o cualquier otro inconveniente que pudiera producirse en la consola, la tarjeta microSD u otros dispositivos durante o después de seguir un tutorial. Los resultados pueden variar según el modelo, los componentes, los archivos y el sistema instalado.</p>
+        <p class="responsibility-last">Si no estás seguro de algún paso, detené el procedimiento y buscá información adicional antes de continuar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap footer-row"><span>© 1DSAS3 Gaming · Hecho para la comunidad gamer.</span><div class="footer-links"><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">Discord</a><a href="https://llabrapablo-prog.github.io/pagina-de-prueba-2/" target="_blank" rel="noopener noreferrer">Ficha de ejemplo</a></div></div></footer>
 </div>
 
 <script>
