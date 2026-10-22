@@ -950,7 +950,45 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
     }).filter(game => game.name && game.score > 0);
     games.sort((a,b) => b.score - a.score || a.name.localeCompare(b.name, 'es'));
     if (!games.length) {
-      featured.innerHTML = '<div class="community-favorite-empty">Todavía no hay votos. ¡Sé el primero en puntuar un juego en el catálogo!</div>';
+      // Juego de muestra para que la sección Favoritos no quede vacía antes de recibir votos.
+      const sample = cards.find(card => getName(card) === 'Sonic Mania') || cards[0];
+      if (!sample) {
+        featured.innerHTML = '<div class="community-favorite-empty">Todavía no hay juegos en el catálogo.</div>';
+        return;
+      }
+      const sampleName = getName(sample);
+      const sampleBody = sample.querySelector('.game-body');
+      const sampleArt = sample.querySelector('.game-thumb')?.cloneNode(true);
+      const sampleChips = sampleBody?.querySelector('.chips')?.cloneNode(true);
+      featured.replaceChildren();
+      const demoCard = document.createElement('article');
+      demoCard.className = 'game-card community-winner-card';
+      if (sampleArt) demoCard.appendChild(sampleArt);
+      const body = document.createElement('div');
+      body.className = 'game-body';
+      const heading = document.createElement('h3');
+      heading.textContent = '⭐ ' + sampleName;
+      const stars = document.createElement('div');
+      stars.className = 'community-stars';
+      stars.setAttribute('aria-label', 'Estrellas ilustrativas de ejemplo; no es una puntuación real');
+      stars.setAttribute('aria-hidden', 'true');
+      stars.style.fontSize = '24px';
+      stars.style.color = '#A6FF00';
+      stars.textContent = '★★★★★';
+      const description = document.createElement('p');
+      description.textContent = sampleBody?.querySelector('p')?.textContent || 'Juego destacado de ejemplo.';
+      const note = document.createElement('p');
+      note.className = 'community-vote-notice';
+      note.textContent = 'Ejemplo visual: todavía no hay votos reales. Cuando alguien puntúe los juegos del catálogo, aquí aparecerá el favorito según las puntuaciones guardadas en este navegador.';
+      const jump = document.createElement('a');
+      jump.className = 'btn btn-primary';
+      jump.href = '#ports';
+      jump.textContent = 'Ir al catálogo para votar ↗';
+      body.append(heading, stars, description);
+      if (sampleChips) body.appendChild(sampleChips);
+      body.append(note, jump);
+      demoCard.appendChild(body);
+      featured.appendChild(demoCard);
       return;
     }
     const winner = games[0];
