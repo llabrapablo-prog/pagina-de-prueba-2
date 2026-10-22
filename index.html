@@ -38,7 +38,7 @@ html { min-height: 100%; background: #25292D; }
 a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:focus-visible, a:focus-visible { outline: 3px solid #A6FF00; outline-offset: 4px; }
-.wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+.wrap { width: min(1500px, calc(100% - 32px)); margin: 0 auto; }
 .nav { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 0; }
 .brand { display:flex; align-items:center; gap:12px; font-weight:950; letter-spacing:-.04em; }
 .brand-mark { width:45px; height:45px; display:grid; place-items:center; background:linear-gradient(135deg,#A6FF00,#111315); color:white; border-radius:14px; font-size:24px; box-shadow:0 8px 24px #246bfe40; }
@@ -117,13 +117,16 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .section-head p { color:#C7D2BC; max-width:420px; line-height:1.65; margin:0; font-size:14px; }
 .feature { display:grid; grid-template-columns: .85fr 1.15fr; gap:24px; }
 .game-card { border:1px solid #343B34; border-radius:22px; background:linear-gradient(180deg,#171B1E,#25292D); overflow:hidden; }
+#juegos .game-card { cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+#juegos .game-card:hover { transform:translateY(-4px); border-color:#A6FF00; box-shadow:0 14px 32px #0005; }
+#juegos .game-card:focus-within { outline:2px solid #A6FF00; outline-offset:3px; }
 .game-thumb { min-height:240px; padding:28px; display:flex; align-items:end; background:radial-gradient(circle at 70% 28%,#ffe36b 0 9%,transparent 10%),linear-gradient(155deg,#2fb8ed,#1966bd 48%,#ef9b31 49%,#e84b36); position:relative; }
 .game-thumb::before { content:"🍄"; font-size:90px; position:absolute; right:24px; top:23px; filter:drop-shadow(0 9px 6px #0004); }
 .game-thumb::after { content:"✦  ✦  ✦"; position:absolute; top:20px; left:25px; font-size:25px; color:#25292D88; letter-spacing:15px; }
 .thumb-label { color:white; font-weight:1000; font-size:34px; letter-spacing:-.07em; text-shadow:0 3px 0 #17356c; z-index:1; }
 .thumb-label small { display:block; font-size:11px; letter-spacing:.22em; }
 .game-body { padding:24px; }
-.game-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:26px; }
+.game-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; margin-top:26px; }
 .game-list > .game-card { aspect-ratio: 1 / 1; min-width: 0; display: flex; flex-direction: column; }
 .game-list .game-thumb { flex: 0 0 48%; min-height: 0; padding: 20px; }
 .game-list .game-body { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
@@ -143,7 +146,8 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .game-thumb.zelda { background:radial-gradient(circle at 72% 25%,#25292D1a8 0 8%,transparent 9%),linear-gradient(145deg,#48b8b1,#247d83 50%,#1a3756); }
 .game-thumb.zelda::before { content:"🗡️"; }
 .demo-note { color:#91a2bf; font-size:12px; line-height:1.6; margin:18px 0 0; }
-@media (max-width:760px) { .game-list { grid-template-columns:1fr 1fr; } }
+@media (max-width:1100px) { .game-list { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:760px) { .game-list { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; } }
 @media (max-width:500px) { .game-list { grid-template-columns:1fr; } }
 
 .game-body h3 { margin:0 0 10px; font-size:23px; letter-spacing:-.04em; }
@@ -233,8 +237,8 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 /* Reproductor flotante al recorrer la página: no modifica el ancho del catálogo */
 @media (min-width: 1100px) {
   body.catalog-player-floating .game-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding-right: 270px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding-right: 0;
   }
   .gameplay-wrap.is-floating {
     position: fixed !important;
@@ -403,7 +407,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
  if(!grid || !grid.classList.contains('game-list') || grid.id==='latest-games') return;
  const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
  const latestGrid=document.getElementById('latest-games'), latestPagination=document.getElementById('latest-pagination'), catalogPagination=document.getElementById('catalog-pagination');
- const pageSize=9, latestPageSize=4;
+ const pageSize=16, latestPageSize=4;
  cards.filter(card=>card.dataset.added).sort((a,b)=>b.dataset.added.localeCompare(a.dataset.added)).forEach(card=>latestGrid?.appendChild(card.cloneNode(true)));
  let genre='Todos', catalogPage=1, latestPage=1;
  const norm=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -487,6 +491,16 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
     });
     body.appendChild(button);
   });
+
+  // Toda la ficha abre su detalle al hacer clic, excepto controles interactivos.
+  document.addEventListener('click', event => {
+    const card = event.target.closest('#juegos .game-card');
+    if (!card) return;
+    if (event.target.closest('button, a, input, select, textarea, label, .community-rating, .community-stars')) return;
+    const detailButton = card.querySelector('.game-detail-btn');
+    if (detailButton) detailButton.click();
+  });
+
   function dismiss(){overlay.classList.remove('open');document.body.style.overflow='';}
   close.addEventListener('click',dismiss);
   overlay.addEventListener('click',event=>{if(event.target===overlay)dismiss();});
