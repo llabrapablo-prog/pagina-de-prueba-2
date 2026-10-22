@@ -714,5 +714,35 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   })();
 </script>
 
+
+<script>
+  // Efecto StarCraft Confirm al pasar el cursor por las fichas de juegos/ports.
+  (() => {
+    const gameConfirmSound = new Audio('https://www.myinstants.com/media/sounds/starcraft-confirm.mp3');
+    gameConfirmSound.preload = 'auto';
+    gameConfirmSound.volume = 0.32;
+    let lastGameSoundAt = 0;
+    function playGameConfirmSound() {
+      const now = Date.now();
+      if (now - lastGameSoundAt < 280) return;
+      lastGameSoundAt = now;
+      try {
+        gameConfirmSound.pause();
+        gameConfirmSound.currentTime = 0;
+        const playback = gameConfirmSound.play();
+        if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+      } catch (_) {}
+    }
+    document.querySelectorAll('.game-card, .game-cover, #latest-games .game-card').forEach((card) => {
+      card.addEventListener('pointerenter', playGameConfirmSound);
+      card.addEventListener('click', playGameConfirmSound);
+    });
+    // La cuadrícula de ports usa tarjetas que pueden crearse o moverse después de cargar.
+    document.addEventListener('pointerover', (event) => {
+      const card = event.target.closest('.game-card, .game-cover');
+      if (card && !card.contains(event.relatedTarget)) playGameConfirmSound();
+    });
+  })();
+</script>
 </body>
 </html>
