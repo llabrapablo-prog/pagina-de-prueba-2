@@ -117,9 +117,9 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .section-head p { color:#C7D2BC; max-width:420px; line-height:1.65; margin:0; font-size:14px; }
 .feature { display:grid; grid-template-columns: .85fr 1.15fr; gap:24px; }
 .game-card { border:1px solid #343B34; border-radius:22px; background:linear-gradient(180deg,#171B1E,#25292D); overflow:hidden; }
-#juegos .game-card { cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
-#juegos .game-card:hover { transform:translateY(-4px); border-color:#A6FF00; box-shadow:0 14px 32px #0005; }
-#juegos .game-card:focus-within { outline:2px solid #A6FF00; outline-offset:3px; }
+#juegos .game-card, #ports .game-card { cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+#juegos .game-card:hover, #ports .game-card:hover { transform:translateY(-4px); border-color:#A6FF00; box-shadow:0 14px 32px #0005; }
+#juegos .game-card:focus-within, #ports .game-card:focus-within { outline:2px solid #A6FF00; outline-offset:3px; }
 .game-thumb { min-height:240px; padding:28px; display:flex; align-items:end; background:radial-gradient(circle at 70% 28%,#ffe36b 0 9%,transparent 10%),linear-gradient(155deg,#2fb8ed,#1966bd 48%,#ef9b31 49%,#e84b36); position:relative; }
 .game-thumb::before { content:"🍄"; font-size:90px; position:absolute; right:24px; top:23px; filter:drop-shadow(0 9px 6px #0004); }
 .game-thumb::after { content:"✦  ✦  ✦"; position:absolute; top:20px; left:25px; font-size:25px; color:#25292D88; letter-spacing:15px; }
@@ -178,6 +178,12 @@ footer { border-top:1px solid #343B34; padding:26px 0 35px; color:#A7B0A0; font-
 .catalog-status { color:#C7D2BC; font-size:13px; margin:16px 0 0; }
 .catalog-empty { display:none; margin-top:16px; padding:22px; border:1px dashed #354562; border-radius:16px; color:#C7D2BC; text-align:center; }
 .game-list > .game-card[hidden] { display:none !important; }
+/* En Ports dejamos espacio para la votación y el botón de ficha: las tarjetas cuadradas recortaban estos controles. */
+#ports .game-list > .game-card { aspect-ratio:auto; min-height:0; height:auto; }
+#ports .game-list .game-thumb { flex:0 0 190px; min-height:190px; }
+#ports .game-list .game-body { flex:1 1 auto; min-height:0; overflow:visible; }
+#ports .community-rating { flex:0 0 auto; }
+#ports .game-list .game-detail-btn { margin-top:12px; }
 .game-detail-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; margin-top:2px; border:1px solid #4c8cff; border-radius:11px; background:#246bfe; color:#25292D; font:inherit; font-size:13px; font-weight:850; cursor:pointer; }
 .game-detail-btn:hover { filter:brightness(1.12); transform:translateY(-1px); }
 .game-detail-overlay { position:fixed; inset:0; z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; background:#030713d9; backdrop-filter:blur(8px); overflow:auto; }
@@ -432,7 +438,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   filtered.forEach((card,index)=>{card.hidden=index<(catalogPage-1)*pageSize||index>=catalogPage*pageSize;});
   const first=filtered.length?(catalogPage-1)*pageSize+1:0;if(status) status.textContent='Mostrando '+first+'–'+Math.min(catalogPage*pageSize,filtered.length)+' de '+filtered.length+' juegos filtrados ('+cards.length+' en total).';
   if(empty) empty.style.display=filtered.length?'none':'block';
-  renderPagination(catalogPagination,pages,catalogPage,next=>{catalogPage=next;applyFilters();document.getElementById('juegos')?.scrollIntoView({behavior:'smooth',block:'start'});},'Página');
+  renderPagination(catalogPagination,pages,catalogPage,next=>{catalogPage=next;applyFilters();document.getElementById('ports')?.scrollIntoView({behavior:'smooth',block:'start'});},'Página');
  }
  function renderLatest(){if(!latestGrid)return;const latest=[...latestGrid.querySelectorAll(':scope > .game-card')];const pages=Math.max(1,Math.ceil(latest.length/latestPageSize));latestPage=Math.min(latestPage,pages);latest.forEach((card,index)=>{card.hidden=index<(latestPage-1)*latestPageSize||index>=latestPage*latestPageSize;});renderPagination(latestPagination,pages,latestPage,next=>{latestPage=next;renderLatest();latestGrid.scrollIntoView({behavior:'smooth',block:'center'});},'Página de novedades');}
  const genreFilters=document.getElementById('genre-filters');
@@ -469,7 +475,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   const title=document.getElementById('game-detail-title');
   const close=document.getElementById('game-detail-close');
   const escapeHTML=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  document.querySelectorAll('#juegos .game-card').forEach(card=>{
+  document.querySelectorAll('#juegos .game-card, #ports .game-card').forEach(card=>{
     const heading=card.querySelector('h3');
     if(!heading)return;
     const name=heading.textContent.trim();
@@ -494,7 +500,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 
   // Toda la ficha abre su detalle al hacer clic, excepto controles interactivos.
   document.addEventListener('click', event => {
-    const card = event.target.closest('#juegos .game-card');
+    const card = event.target.closest('#juegos .game-card, #ports .game-card');
     if (!card) return;
     if (event.target.closest('button, a, input, select, textarea, label, .community-rating, .community-stars')) return;
     const detailButton = card.querySelector('.game-detail-btn');
