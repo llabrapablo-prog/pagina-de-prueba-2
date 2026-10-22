@@ -300,8 +300,28 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 @media(max-width:520px){.ambient-toggle{bottom:12px !important;left:12px !important;padding:11px 12px;font-size:10px}}
 
 
-/* Radio Pixel retro flotante */
-#pixel-radio{position:fixed;right:20px;bottom:20px;z-index:9998;width:260px;max-width:calc(100vw - 28px);padding:13px;border:1px solid #A6FF00;border-radius:12px;background:#111315;color:#edf7e4;box-shadow:0 8px 28px #000b;font-family:Inter,Arial,sans-serif}#pixel-radio .pr-title{color:#A6FF00;font-weight:900;font-size:12px;letter-spacing:.08em}#pixel-radio .pr-sub{font-size:10px;color:#aab3a3;margin:4px 0 12px}#pixel-radio .pr-track{padding:10px;background:#090b0c;border-radius:7px;margin-bottom:10px}#pixel-radio .pr-name{font-weight:800;font-size:12px}#pixel-radio .pr-kind{font-size:10px;color:#aab3a3;margin-top:4px}#pixel-radio .pr-controls{display:flex;gap:7px}#pixel-radio button{cursor:pointer;border:1px solid #46503d;border-radius:7px;background:#20251f;color:#eff7e8;padding:8px 10px}#pixel-radio #pr-play{flex:1;background:#A6FF00;color:#111315;font-weight:900;border-color:#A6FF00}#pixel-radio .pr-vol{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:11px;color:#aab3a3}#pixel-radio input{width:100%;accent-color:#A6FF00}#pixel-radio .pr-status{float:right;color:#A6FF00;font-size:9px}@media(max-width:520px){#pixel-radio{right:12px;bottom:12px;width:235px}}
+/* Radio Lo-fi Gamer flotante */
+#pixel-radio{position:fixed;right:20px;bottom:20px;z-index:9998;width:292px;max-width:calc(100vw - 28px);padding:15px;border:1px solid #A6FF0080;border-radius:17px;background:linear-gradient(145deg,#171d19,#0d100f);color:#edf7e4;box-shadow:0 12px 34px #000b,0 0 28px #A6FF0010;font-family:Inter,Arial,sans-serif;backdrop-filter:blur(12px)}
+#pixel-radio .pr-title{color:#C9FF70;font-weight:900;font-size:12px;letter-spacing:.08em}
+#pixel-radio .pr-sub{font-size:10px;color:#aab3a3;margin:5px 0 12px}
+#pixel-radio .pr-track{padding:11px;background:#090d0b;border:1px solid #293329;border-radius:11px;margin-bottom:10px}
+#pixel-radio .pr-name{font-weight:850;font-size:13px;color:#F0F8E8}
+#pixel-radio .pr-kind{font-size:10px;color:#aab3a3;margin-top:5px;line-height:1.45}
+#pixel-radio .pr-controls{display:flex;gap:7px}
+#pixel-radio button{cursor:pointer;border:1px solid #46503d;border-radius:9px;background:#20251f;color:#eff7e8;padding:9px 10px;font-size:11px;transition:transform .15s,border-color .15s}
+#pixel-radio button:hover{border-color:#A6FF00;transform:translateY(-1px)}
+#pixel-radio button:focus-visible{outline:2px solid #A6FF00;outline-offset:2px}
+#pixel-radio #pr-play{flex:1;background:#A6FF00;color:#111315;font-weight:900;border-color:#A6FF00}
+#pixel-radio .pr-track-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:10px}
+#pixel-radio .pr-track-picker button{padding:8px 7px;text-align:left;background:#171c18}
+#pixel-radio .pr-track-picker button.active{border-color:#A6FF00;color:#D7FF87;background:#27321f}
+#pixel-radio .pr-progress{height:3px;margin-top:10px;background:#252c25;border-radius:99px;overflow:hidden}
+#pixel-radio #pr-progress{display:block;width:0;height:100%;background:linear-gradient(90deg,#8ED900,#E7FFB0);transition:width .25s linear}
+#pixel-radio .pr-vol{display:flex;gap:8px;align-items:center;margin-top:11px;font-size:11px;color:#aab3a3}
+#pixel-radio input{width:100%;accent-color:#A6FF00}
+#pixel-radio .pr-status{float:right;color:#A6FF00;font-size:9px;letter-spacing:.1em}
+#pixel-radio .pr-footnote{margin-top:9px;color:#7f8b7c;font-size:9px;line-height:1.4}
+@media(max-width:520px){#pixel-radio{right:12px;bottom:12px;width:250px;padding:12px}#pixel-radio .pr-track-picker{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* Votación por estrellas — prototipo de la página de prueba */
 .community-rating{margin:10px 0 12px;padding:10px 12px;border:1px solid #35402A;border-radius:12px;background:#111815}
@@ -883,10 +903,133 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   })();
 </script>
 
-<aside id="pixel-radio" aria-label="Radio Pixel retro"><div><span class="pr-status" id="pr-status">EN PAUSA</span><div class="pr-title">▦ RADIO PIXEL</div><div class="pr-sub">ARCADE · 8-BIT · GAMING</div></div><div class="pr-track"><div class="pr-name" id="pr-name">01 · Pixel Adventure</div><div class="pr-kind">Chiptune original generado en la página</div></div><div class="pr-controls"><button id="pr-prev" type="button" aria-label="Tema anterior">◀</button><button id="pr-play" type="button">▶ REPRODUCIR</button><button id="pr-next" type="button" aria-label="Tema siguiente">▶|</button></div><label class="pr-vol">Volumen <input id="pr-volume" type="range" min="0" max="100" value="22" aria-label="Volumen"></label></aside>
+<aside id="pixel-radio" aria-label="Radio Lo-fi Gamer"><div><span class="pr-status" id="pr-status">EN PAUSA</span><div class="pr-title">☾ RADIO LO-FI GAMER</div><div class="pr-sub">BEATS SUAVES · NOCHE · PIXELES</div></div><div class="pr-track"><div class="pr-name" id="pr-name">01 · Café y píxeles</div><div class="pr-kind" id="pr-kind">Instrumental original sintetizado en tu navegador</div><div class="pr-progress" aria-hidden="true"><span id="pr-progress"></span></div></div><div class="pr-controls"><button id="pr-prev" type="button" aria-label="Tema anterior">◀</button><button id="pr-play" type="button">▶ ESCUCHAR</button><button id="pr-next" type="button" aria-label="Tema siguiente">SIG. ▶</button></div><div class="pr-track-picker" aria-label="Elegir ambiente"><button type="button" data-track="0" class="active">☕ Café</button><button type="button" data-track="1">🌧 Lluvia</button><button type="button" data-track="2">🌙 Noche</button><button type="button" data-track="3">🌿 Calma</button></div><label class="pr-vol">Volumen <input id="pr-volume" type="range" min="0" max="100" value="18" aria-label="Volumen"></label><div class="pr-footnote">Música original generada localmente · sin canciones comerciales</div></aside>
 <script>
-(() => {const box=document.getElementById('pixel-radio');if(!box)return;const songs=[{n:'01 · Pixel Adventure',b:132,a:[659,784,988,784,659,523,587,659,784,659,523,392,440,523,587,523]},{n:'02 · Neon Racer',b:148,a:[392,392,523,659,587,523,440,440,523,587,784,659,587,523,392,330]},{n:'03 · Boss Battle',b:116,a:[220,220,330,294,220,196,247,220,330,392,349,294,247,220,196,165]}];let ix=0,ni=0,ctx=null,gain=null,timer=null,on=false;const play=document.getElementById('pr-play'),stat=document.getElementById('pr-status'),name=document.getElementById('pr-name'),vol=document.getElementById('pr-volume');function draw(){name.textContent=songs[ix].n}function note(){if(!on||!ctx)return;const s=songs[ix],now=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain(),f=s.a[ni++%s.a.length],d=60/s.b;o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.09,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+d*.7);o.connect(g);g.connect(gain);o.start(now);o.stop(now+d*.72)}async function start(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){stat.textContent='AUDIO NO DISPONIBLE';return}if(!ctx){ctx=new AC();gain=ctx.createGain();gain.gain.value=+vol.value/100;gain.connect(ctx.destination)}await ctx.resume();on=true;stat.textContent='EN VIVO';play.textContent='Ⅱ PAUSAR';if(timer)clearInterval(timer);note();timer=setInterval(note,60000/songs[ix].b)}function pause(){on=false;if(timer)clearInterval(timer);timer=null;if(ctx)ctx.suspend();stat.textContent='EN PAUSA';play.textContent='▶ REPRODUCIR'}play.addEventListener('click',()=>on?pause():start());function change(d){ix=(ix+d+songs.length)%songs.length;ni=0;draw();if(on)start()}document.getElementById('pr-prev').addEventListener('click',()=>change(-1));document.getElementById('pr-next').addEventListener('click',()=>change(1));vol.addEventListener('input',()=>{if(gain&&ctx)gain.gain.setTargetAtTime(+vol.value/100,ctx.currentTime,.03)});draw()})();
-</script>
+(() => {
+  const box = document.getElementById('pixel-radio');
+  if (!box) return;
+  const tracks = [
+    { name: '01 · Café y píxeles', kind: 'Beats cálidos para recorrer la web', bpm: 72, root: 130.81, chord: [0, 3, 7, 10], melody: [0, 3, 7, 10, 7, 3, 5, 10], texture: 'cafe' },
+    { name: '02 · Lluvia en la ventana', kind: 'Piano suave con ambiente lluvioso imaginario', bpm: 66, root: 110, chord: [0, 5, 7, 10], melody: [7, 10, 12, 10, 7, 5, 3, 5], texture: 'rain' },
+    { name: '03 · Noche de estudio', kind: 'Melodía tranquila para jugar o concentrarse', bpm: 70, root: 146.83, chord: [0, 4, 7, 11], melody: [11, 7, 4, 7, 9, 7, 4, 2], texture: 'night' },
+    { name: '04 · Paseo tranquilo', kind: 'Acordes relajados y pulso lento', bpm: 76, root: 123.47, chord: [0, 3, 7, 9], melody: [0, 3, 7, 9, 7, 5, 3, 2], texture: 'calm' }
+  ];
+  let index = 0, step = 0, ctx = null, master = null, timer = null, playing = false, beatStart = 0;
+  const playButton = document.getElementById('pr-play');
+  const status = document.getElementById('pr-status');
+  const name = document.getElementById('pr-name');
+  const kind = document.getElementById('pr-kind');
+  const volume = document.getElementById('pr-volume');
+  const progress = document.getElementById('pr-progress');
+  const pickers = [...box.querySelectorAll('[data-track]')];
+  const semitone = n => Math.pow(2, n / 12);
+  function tone(freq, when, duration, wave, level, filterFreq) {
+    if (!ctx || !master) return;
+    const osc = ctx.createOscillator(), amp = ctx.createGain(), filter = ctx.createBiquadFilter();
+    osc.type = wave || 'sine';
+    osc.frequency.setValueAtTime(freq, when);
+    filter.type = 'lowpass'; filter.frequency.value = filterFreq || 1600;
+    amp.gain.setValueAtTime(0.0001, when);
+    amp.gain.exponentialRampToValueAtTime(Math.max(0.0002, level), when + 0.025);
+    amp.gain.setTargetAtTime(0.0001, when + duration * 0.58, duration * 0.18);
+    osc.connect(filter); filter.connect(amp); amp.connect(master);
+    osc.start(when); osc.stop(when + duration);
+  }
+  function noiseHit(when, duration, level, highpass) {
+    if (!ctx || !master) return;
+    const count = Math.floor(ctx.sampleRate * duration);
+    const buffer = ctx.createBuffer(1, count, ctx.sampleRate), data = buffer.getChannelData(0);
+    for (let i = 0; i < count; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / count);
+    const src = ctx.createBufferSource(), filter = ctx.createBiquadFilter(), amp = ctx.createGain();
+    src.buffer = buffer; filter.type = highpass ? 'highpass' : 'lowpass'; filter.frequency.value = highpass || 180;
+    amp.gain.setValueAtTime(level, when); amp.gain.exponentialRampToValueAtTime(0.0001, when + duration);
+    src.connect(filter); filter.connect(amp); amp.connect(master); src.start(when); src.stop(when + duration);
+  }
+  function scheduleBeat() {
+    if (!playing || !ctx) return;
+    const t = ctx.currentTime + 0.02, tr = tracks[index], beat = 60 / tr.bpm, barStep = step % 16;
+    const chordRoot = tr.root * semitone(tr.chord[Math.floor(step / 4) % tr.chord.length]);
+    // Bass redondo y acordes con un toque cálido, todos sintetizados localmente.
+    if (barStep % 4 === 0) tone(tr.root / 2, t, beat * 1.65, 'triangle', 0.12, 420);
+    if (barStep % 4 === 2) tone(tr.root * 1.5, t, beat * 0.8, 'sine', 0.045, 700);
+    if (barStep % 4 === 0) {
+      tone(chordRoot, t, beat * 2.8, 'triangle', 0.025, 900);
+      tone(chordRoot * 1.25, t + 0.012, beat * 2.6, 'sine', 0.018, 1200);
+      tone(chordRoot * 1.5, t + 0.02, beat * 2.5, 'sine', 0.014, 1400);
+    }
+    // Percusión suave: golpe grave y caja de ruido muy discreta.
+    if (barStep === 0 || barStep === 8) {
+      tone(78, t, 0.12, 'sine', 0.11, 150);
+      noiseHit(t + 0.015, 0.07, 0.018, 2500);
+    }
+    if (barStep === 4 || barStep === 12) noiseHit(t, 0.12, 0.024, 1200);
+    if (barStep % 2 === 0) {
+      const noteIndex = tr.melody[(Math.floor(step / 2)) % tr.melody.length];
+      const base = tr.root * 4 * semitone(noteIndex);
+      tone(base, t + 0.01, beat * 0.65, 'sine', 0.026, 2100);
+      if (tr.texture === 'rain' && barStep % 4 === 2) noiseHit(t, 0.18, 0.004, 4200);
+    }
+    step++;
+  }
+  function paint() {
+    const tr = tracks[index];
+    name.textContent = tr.name;
+    kind.textContent = tr.kind;
+    pickers.forEach((button, i) => {
+      const active = i === index;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+  async function start() {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) { status.textContent = 'AUDIO NO DISPONIBLE'; return; }
+    if (!ctx) {
+      ctx = new AudioContextClass();
+      master = ctx.createGain();
+      master.gain.value = Number(volume.value) / 100;
+      master.connect(ctx.destination);
+    }
+    await ctx.resume();
+    playing = true;
+    status.textContent = 'REPRODUCIENDO';
+    playButton.textContent = 'Ⅱ PAUSAR';
+    if (timer) clearInterval(timer);
+    scheduleBeat();
+    timer = setInterval(scheduleBeat, (60 / tracks[index].bpm) * 500);
+  }
+  function pause() {
+    playing = false;
+    if (timer) clearInterval(timer);
+    timer = null;
+    if (ctx) ctx.suspend();
+    status.textContent = 'EN PAUSA';
+    playButton.textContent = '▶ ESCUCHAR';
+    progress.style.width = '0%';
+  }
+  function selectTrack(nextIndex) {
+    const wasPlaying = playing;
+    if (timer) clearInterval(timer);
+    index = (nextIndex + tracks.length) % tracks.length;
+    step = 0;
+    paint();
+    if (wasPlaying) start();
+  }
+  playButton.addEventListener('click', () => playing ? pause() : start());
+  document.getElementById('pr-prev').addEventListener('click', () => selectTrack(index - 1));
+  document.getElementById('pr-next').addEventListener('click', () => selectTrack(index + 1));
+  pickers.forEach(button => button.addEventListener('click', () => selectTrack(Number(button.dataset.track))));
+  volume.addEventListener('input', () => {
+    if (master && ctx) master.gain.setTargetAtTime(Number(volume.value) / 100, ctx.currentTime, 0.04);
+  });
+  setInterval(() => {
+    if (playing) progress.style.width = (((Date.now() - beatStart) % 12000) / 12000 * 100) + '%';
+  }, 250);
+  const originalStart = start;
+  start = async function() { beatStart = Date.now(); await originalStart(); };
+  paint();
+})();
+</script></script>
 
 <script>
 (() => {
