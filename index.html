@@ -796,7 +796,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   if (!catalog || !featured) return;
 
   const storageKey = '1dsas3-community-ratings-v1';
-  const normalize = value => String(value).normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().trim();
+  const normalize = value => String(value).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const getName = card => card.querySelector('.game-body h3')?.textContent.trim() || '';
   const readRatings = () => {
     try {
@@ -837,7 +837,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
   }
 
   function installRating(card) {
-    if (card.id === 'community-favorite-card' || card.querySelector('.community-rating')) return;
+    if (card.id === 'community-favorite-card' || card.closest('#community-favorite-content') || card.querySelector('.community-rating')) return;
     const body = card.querySelector('.game-body');
     const name = getName(card);
     if (!body || !name) return;
@@ -849,7 +849,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 
   function updateAllRatingBlocks() {
     document.querySelectorAll('.game-card').forEach(card => {
-      if (card.id === 'community-favorite-card') return;
+      if (card.id === 'community-favorite-card' || card.closest('#community-favorite-content')) return;
       const name = getName(card);
       const block = card.querySelector('.community-rating');
       if (!name || !block) return;
