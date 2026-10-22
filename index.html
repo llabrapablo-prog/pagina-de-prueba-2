@@ -424,7 +424,17 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
     const likeLink = document.getElementById('short-like-link');
     if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
     window.clearTimeout(rotateTimer);
-    rotateTimer = window.setTimeout(() => sh<div id="visual-editor-panel" role="region" aria-label="Herramientas de edición visual">
+    rotateTimer = window.setTimeout(() => showShort((current + 1) % shorts.length), 12000);
+  };
+  const prev = document.getElementById('short-prev');
+  const next = document.getElementById('short-next');
+  if (prev) prev.addEventListener('click', () => showShort(current - 1));
+  if (next) next.addEventListener('click', () => showShort(current + 1));
+  showShort(0);
+})();
+</script>
+
+<div id="visual-editor-panel" role="region" aria-label="Herramientas de edición visual">
   <strong>✏️ Editor visual de elementos</strong>
   <p>Seleccioná y arrastrá la pantalla de video, la portada, una imagen o una tarjeta. Elegí el tamaño con el control de abajo.</p>
   <p id="visual-editor-selected" style="color:#A6FF00;font-weight:800">Elemento seleccionado: ninguno</p>
@@ -440,46 +450,112 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 <button type="button" id="visual-editor-launch" aria-expanded="false">✏️ Editar página</button>
 <script>
 (() => {
-  const launch=document.getElementById('visual-editor-launch'), panel=document.getElementById('visual-editor-panel');
-  const status=document.getElementById('visual-editor-status'), selectedLabel=document.getElementById('visual-editor-selected');
-  const sizeInput=document.getElementById('visual-editor-size'), sizeLabel=document.getElementById('visual-editor-size-label');
-  const storageKey='1dsas3-test-visual-layout-v2';
-  const selector='.gameplay-wrap, .gameplay-screen, .game-art, .cover, .r36s-photo, .game-card, .game-thumb, .brand, .gameplay-actions, .gameplay-hint, .section-head, .discord, footer .footer-row';
-  const editable=[...document.querySelectorAll(selector)];
-  editable.forEach((el,i)=>{el.dataset.visualEditId='element-'+i;});
-  let selected=null, drag=null;
-  const parseTranslate=el=>{const m=(el.style.translate||'').match(/^(-?[\\d.]+)px\\s+(-?[\\d.]+)px$/);return m?{x:Number(m[1]),y:Number(m[2])}:{x:0,y:0};};
-  const parseScale=el=>{const m=(el.style.transform||'').match(/scale\\(([\\d.]+)\\)/);return m?Number(m[1]):1;};
-  function layout(){try{return JSON.parse(localStorage.getItem(storageKey)||'{}')}catch(_){return {}}}
-  function applyLayout(){const data=layout();editable.forEach(el=>{const p=data[el.dataset.visualEditId];el.style.translate=p?p.x+'px '+p.y+'px':'';el.style.transform=p&&p.scale?'scale('+p.scale+')':'';});}
-  function choose(el){if(selected)selected.classList.remove('editor-selected');selected=el;if(selected){selected.classList.add('editor-selected');selectedLabel.textContent='Elemento seleccionado: '+(el.getAttribute('aria-label')||el.querySelector('h3')?.textContent?.trim()||el.classList[0]||'elemento');sizeInput.value=Math.round(parseScale(el)*100);sizeLabel.textContent=sizeInput.value+'%';}else{selectedLabel.textContent='Elemento seleccionado: ninguno';}}
-  function saveLayout(){const data={};editable.forEach(el=>{const p=parseTranslate(el),scale=parseScale(el);if(p.x||p.y||scale!==1)data[el.dataset.visualEditId]={x:p.x,y:p.y,scale};});try{localStorage.setItem(storageKey,JSON.stringify(data));status.textContent='Cambios guardados en este navegador.';}catch(_){status.textContent='No se pudo guardar. Revisá la configuración del navegador.';}}
-  function setMode(on){document.body.classList.toggle('visual-editor-active',on);panel.classList.toggle('open',on);launch.setAttribute('aria-expanded',String(on));launch.textContent=on?'✏️ Editor activo':'✏️ Editar página';editable.forEach(el=>el.dataset.visualEditable=String(on));if(!on)choose(null);status.textContent=on?'Hacé clic en un elemento para seleccionarlo y arrastralo para moverlo.':'Modo de edición cerrado.';}
-  document.addEventListener('pointerdown',event=>{
-    if(!document.body.classList.contains('visual-editor-active'))return;
-    const el=event.target.closest('[data-visual-editable="true"]');
-    if(!el||event.target.closest('#visual-editor-panel,#visual-editor-launch,button,a,input,textarea,select'))return;
-    event.preventDefault();event.stopPropagation();choose(el);
-    const p=parseTranslate(el);drag={el,startX:event.clientX,startY:event.clientY,x:p.x,y:p.y,pointerId:event.pointerId};
-    el.classList.add('editor-dragging');try{el.setPointerCapture(event.pointerId)}catch(_){}
-  },true);
-  document.addEventListener('pointermove',event=>{if(!drag)return;drag.el.style.translate=(drag.x+event.clientX-drag.startX)+'px '+(drag.y+event.clientY-drag.startY)+'px';});
-  function finish(){if(drag){drag.el.classList.remove('editor-dragging');drag=null;}}
-  document.addEventListener('pointerup',finish);document.addEventListener('pointercancel',finish);
-  sizeInput.addEventListener('input',()=>{if(!selected)return;const scale=Number(sizeInput.value)/100;selected.style.transform=scale===1?'':'scale('+scale+')';sizeLabel.textContent=sizeInput.value+'%';});
-  launch.addEventListener('click',()=>setMode(!document.body.classList.contains('visual-editor-active')));
-  document.getElementById('visual-editor-save').addEventListener('click',saveLayout);
-  document.getElementById('visual-editor-reset').addEventListener('click',()=>{try{localStorage.removeItem(storageKey)}catch(_){}editable.forEach(el=>{el.style.translate='';el.style.transform='';});choose(null);status.textContent='Posiciones y tamaños restablecidos.';});
-  document.getElementById('visual-editor-exit').addEventListener('click',()=>setMode(false));
-  applyLayout();
-})();
-</script>
+  const launch = document.getElementById('visual-editor-launch');
+  const panel = document.getElementById('visual-editor-panel');
+  const status = document.getElementById('visual-editor-status');
+  const selectedLabel = document.getElementById('visual-editor-selected');
+  const sizeInput = document.getElementById('visual-editor-size');
+  const sizeLabel = document.getElementById('visual-editor-size-label');
+  const storageKey = '1dsas3-test-visual-layout-v2';
+  const selector = '.gameplay-wrap, .gameplay-screen, #gameplay-rotator, .game-art, .cover, .r36s-photo, .game-card, .game-thumb, .brand, .gameplay-actions, .gameplay-hint, .section-head, .discord, footer .footer-row';
+  const editable = [...document.querySelectorAll(selector)];
+  editable.forEach((el, i) => { el.dataset.visualEditId = 'element-' + i; });
+  let selected = null, drag = null;
 
-   try { localStorage.removeItem(storageKey); } catch (_) {}
-    editable.forEach(el => { el.style.translate = ''; });
-    status.textContent = 'Posiciones restablecidas.';
+  const parseTranslate = el => {
+    const value = el.style.translate || '';
+    const m = value.match(/^(-?[\\d.]+)px\\s+(-?[\\d.]+)px$/);
+    return m ? {x:Number(m[1]), y:Number(m[2])} : {x:0, y:0};
+  };
+  const parseScale = el => {
+    const m = (el.style.transform || '').match(/scale\\(([\\d.]+)\\)/);
+    return m ? Number(m[1]) : 1;
+  };
+  function readLayout() {
+    try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); }
+    catch (_) { return {}; }
+  }
+  function applyLayout() {
+    const data = readLayout();
+    editable.forEach(el => {
+      const p = data[el.dataset.visualEditId];
+      el.style.translate = p ? p.x + 'px ' + p.y + 'px' : '';
+      el.style.transform = p && p.scale ? 'scale(' + p.scale + ')' : '';
+    });
+  }
+  function choose(el) {
+    if (selected) selected.classList.remove('editor-selected');
+    selected = el;
+    if (!selected) {
+      selectedLabel.textContent = 'Elemento seleccionado: ninguno';
+      sizeInput.value = 100;
+      sizeLabel.textContent = '100%';
+      return;
+    }
+    selected.classList.add('editor-selected');
+    selectedLabel.textContent = 'Elemento seleccionado: ' +
+      (selected.getAttribute('aria-label') || selected.querySelector('h3')?.textContent?.trim() || selected.classList[0] || selected.id || 'elemento');
+    sizeInput.value = Math.round(parseScale(selected) * 100);
+    sizeLabel.textContent = sizeInput.value + '%';
+  }
+  function saveLayout() {
+    const data = {};
+    editable.forEach(el => {
+      const p = parseTranslate(el), scale = parseScale(el);
+      if (p.x || p.y || scale !== 1) data[el.dataset.visualEditId] = {x:p.x, y:p.y, scale};
+    });
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(data));
+      status.textContent = 'Cambios guardados en este navegador.';
+    } catch (_) { status.textContent = 'No se pudo guardar. Revisá la configuración del navegador.'; }
+  }
+  function setMode(on) {
+    document.body.classList.toggle('visual-editor-active', on);
+    panel.classList.toggle('open', on);
+    launch.setAttribute('aria-expanded', String(on));
+    launch.textContent = on ? '✏️ Editor activo' : '✏️ Editar página';
+    editable.forEach(el => { el.dataset.visualEditable = String(on); });
+    if (!on) choose(null);
+    status.textContent = on ? 'Hacé clic en un elemento y arrastralo para moverlo. Usá el control para cambiar su tamaño.' : 'Modo de edición cerrado.';
+  }
+  document.addEventListener('pointerdown', event => {
+    if (!document.body.classList.contains('visual-editor-active')) return;
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const el = target.closest('[data-visual-editable="true"]');
+    if (!el || target.closest('#visual-editor-panel, #visual-editor-launch, button, a, input, textarea, select')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    choose(el);
+    const p = parseTranslate(el);
+    drag = {el, startX:event.clientX, startY:event.clientY, x:p.x, y:p.y};
+    el.classList.add('editor-dragging');
+  }, true);
+  document.addEventListener('pointermove', event => {
+    if (!drag) return;
+    drag.el.style.translate = (drag.x + event.clientX - drag.startX) + 'px ' + (drag.y + event.clientY - drag.startY) + 'px';
   });
-  exit.addEventListener('click', () => setMode(false));
+  function finish() {
+    if (drag) drag.el.classList.remove('editor-dragging');
+    drag = null;
+  }
+  document.addEventListener('pointerup', finish);
+  document.addEventListener('pointercancel', finish);
+  sizeInput.addEventListener('input', () => {
+    if (!selected) return;
+    const scale = Number(sizeInput.value) / 100;
+    selected.style.transform = scale === 1 ? '' : 'scale(' + scale + ')';
+    sizeLabel.textContent = sizeInput.value + '%';
+  });
+  launch.addEventListener('click', () => setMode(!document.body.classList.contains('visual-editor-active')));
+  document.getElementById('visual-editor-save').addEventListener('click', saveLayout);
+  document.getElementById('visual-editor-reset').addEventListener('click', () => {
+    try { localStorage.removeItem(storageKey); } catch (_) {}
+    editable.forEach(el => { el.style.translate = ''; el.style.transform = ''; });
+    choose(null);
+    status.textContent = 'Posiciones y tamaños restablecidos.';
+  });
+  document.getElementById('visual-editor-exit').addEventListener('click', () => setMode(false));
   applyLayout();
 })();
 </script>
