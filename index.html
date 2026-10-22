@@ -47,8 +47,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid #A6FF00; outline-offs
 .nav-links { display:flex; align-items:center; gap:25px; color:#B7C4AB; font-size:14px; font-weight:700; }
 .nav-links a:hover { color:#25292D; }
 .nav-cta { background:var(--site-secondary); color:white; padding:11px 16px; border-radius:12px; }
-.hero { position:relative; padding:60px 0 72px; background:linear-gradient(180deg,#111315 0%,#191D20 45%,#111315 100%); border-top:1px solid #343B34; border-bottom:1px solid #343B34; }
-.hero-grid { display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:40px; }
+.hero { position:relative; padding:42px 0 48px; background:linear-gradient(180deg,#111315 0%,#191D20 45%,#111315 100%); border-top:1px solid #343B34; border-bottom:1px solid #343B34; }
+.hero-grid { display:grid; grid-template-columns:1.2fr .8fr; align-items:center; gap:28px; }
 .eyebrow { display:inline-flex; align-items:center; gap:8px; border:1px solid #35402A; background:#171B1E; color:#A6FF00; border-radius:999px; padding:8px 12px; font-size:11px; font-weight:900; letter-spacing:.15em; text-transform:uppercase; }
 .pulse { width:7px; height:7px; background:#50f2b2; border-radius:50%; box-shadow:0 0 0 4px #50f2b220; }
 h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px) * var(--site-heading-scale)); line-height:.99; letter-spacing:-.065em; margin:23px 0 20px; max-width:670px; }
@@ -63,7 +63,7 @@ h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px)
 .console-stage { position:relative; min-height:370px; display:grid; place-items:center; isolation:isolate; }
 .r36s-photo { position:relative; z-index:1; display:block; width:min(390px,100%); aspect-ratio:1; object-fit:contain; padding:8px; background:#25292D; border-radius:24px; box-shadow:0 35px 65px #0009; transform:rotate(-4deg); }
 .video-stage { min-height:370px; }
-.gameplay-wrap { width:min(420px,100%); position:relative; z-index:1; }
+.gameplay-wrap { width:min(320px,100%); position:relative; z-index:1; }
 .gameplay-screen { position:relative; width:100%; aspect-ratio:9/16; padding:10px; border-radius:28px; background:linear-gradient(145deg,#25292D,#f8dce9); border:1px solid #25292D; box-shadow:0 28px 60px #A6FF0030; transform:none; overflow:hidden; }
 .gameplay-screen iframe { display:block; width:100%; height:100%; border:0; border-radius:19px; background:#171426; }
 .gameplay-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; }
@@ -75,7 +75,7 @@ h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px)
 .screen-caption { position:absolute; left:18px; bottom:17px; padding:6px 9px; border-radius:7px; background:#1f1939cc; color:#25292D; font-size:9px; font-weight:900; letter-spacing:.12em; pointer-events:none; }
 .video-stage { min-height:0; display:flex; justify-content:center; align-items:center; padding:10px 0; }
 .video-stage::before { background:radial-gradient(ellipse at center,#A6FF0055,transparent 65%); }
-@media(max-width:760px) { .gameplay-wrap { width:min(390px,100%); } .video-stage { min-height:0; padding:16px 0; } .gameplay-action { padding:11px 8px; font-size:12px; } }
+@media(max-width:760px) { .hero { padding:34px 0 40px; } .hero-grid { grid-template-columns:1fr; gap:18px; } .gameplay-wrap { width:min(300px,100%); } .video-stage { min-height:0; padding:8px 0; } .gameplay-action { padding:11px 8px; font-size:12px; } }
 .console-stage::before { content:""; position:absolute; inset:8% 0; background:radial-gradient(ellipse at center,#236dff55,transparent 65%); filter:blur(14px); z-index:-1; }
 .handheld { position:relative; width:min(440px,100%); aspect-ratio:1.42; border-radius:34px 34px 43px 43px; padding:19px 20px 22px; background:linear-gradient(145deg,#3d4b65,#151c2b 42%,#080c14 75%,#344158); border:2px solid #7183a3; box-shadow:0 35px 65px #0009, inset 0 2px 4px #25292D55; transform:rotate(-7deg); }
 .handheld::before { content:""; position:absolute; inset:7px; border-radius:28px 28px 36px 36px; border:1px solid #a9bbd744; pointer-events:none; }
