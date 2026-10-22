@@ -716,31 +716,45 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 
 
 <script>
-  // Efecto StarCraft Confirm al pasar el cursor por las fichas de juegos/ports.
+  // Sonido StarCraft Confirm: fichas, tarjetas clonadas y botón "Ver ficha completa".
   (() => {
     const gameConfirmSound = new Audio('https://www.myinstants.com/media/sounds/starcraft-confirm.mp3');
     gameConfirmSound.preload = 'auto';
     gameConfirmSound.volume = 0.32;
-    let lastGameSoundAt = 0;
-    function playGameConfirmSound() {
+    let lastHoverSoundAt = 0;
+
+    function playGameConfirmSound(isClick = false) {
       const now = Date.now();
-      if (now - lastGameSoundAt < 280) return;
-      lastGameSoundAt = now;
+      // Evita repetición excesiva al mover el cursor entre textos dentro de la misma ficha,
+      // pero deja que el clic siempre pueda reproducir el sonido.
+      if (!isClick && now - lastHoverSoundAt < 350) return;
+      if (!isClick) lastHoverSoundAt = now;
       try {
         gameConfirmSound.pause();
         gameConfirmSound.currentTime = 0;
         const playback = gameConfirmSound.play();
-        if (playback && typeof playback.catch === 'function') playback.catch(() => {});
-      } catch (_) {}
+        if (playback && typeof playback.catch === 'function') {
+          playback.catch((error) => {
+            // El navegador puede bloquear el audio hasta una interacción del usuario.
+            console.debug('El navegador bloqueó el sonido de la ficha:', error);
+          });
+        }
+      } catch (error) {
+        console.debug('No se pudo reproducir el sonido de la ficha:', error);
+      }
     }
-    document.querySelectorAll('.game-card, .game-cover, #latest-games .game-card').forEach((card) => {
-      card.addEventListener('pointerenter', playGameConfirmSound);
-      card.addEventListener('click', playGameConfirmSound);
-    });
-    // La cuadrícula de ports usa tarjetas que pueden crearse o moverse después de cargar.
+
+    // Delegación: también funciona con tarjetas clonadas para "Últimos agregados"
+    // y con los botones "Ver ficha completa" creados dinámicamente.
     document.addEventListener('pointerover', (event) => {
-      const card = event.target.closest('.game-card, .game-cover');
-      if (card && !card.contains(event.relatedTarget)) playGameConfirmSound();
+      const card = event.target.closest('.game-card, .game-cover, .game-detail-btn');
+      if (!card || card.contains(event.relatedTarget)) return;
+      playGameConfirmSound(false);
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('.game-card, .game-cover, .game-detail-btn');
+      if (target) playGameConfirmSound(true);
     });
   })();
 </script>
