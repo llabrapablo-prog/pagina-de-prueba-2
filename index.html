@@ -125,7 +125,7 @@ h1 { font-family:var(--site-font-heading); font-size:calc(clamp(42px,6.4vw,76px)
 h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-height:1.08; letter-spacing:-.05em; margin:9px 0 0; }
 .section-head p { color:#C7D2BC; max-width:420px; line-height:1.65; margin:0; font-size:14px; }
 .feature { display:grid; grid-template-columns: .85fr 1.15fr; gap:24px; }
-.game-card { border:1px solid #343B34; border-radius:22px; background:linear-gradient(180deg,#171B1E,#25292D); overflow:hidden; }
+.game-card { border:1px solid #343B34; border-radius:18px; background:linear-gradient(180deg,#171B1E,#25292D); overflow:hidden; }
 #juegos .game-card, #ports .game-card { cursor:pointer; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
 #juegos .game-card:hover, #ports .game-card:hover { transform:translateY(-4px); border-color:#A6FF00; box-shadow:0 14px 32px #0005; }
 #juegos .game-card:focus-within, #ports .game-card:focus-within { outline:2px solid #A6FF00; outline-offset:3px; }
@@ -135,16 +135,16 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .thumb-label { color:white; font-weight:1000; font-size:34px; letter-spacing:-.07em; text-shadow:0 3px 0 #17356c; z-index:1; }
 .thumb-label small { display:block; font-size:11px; letter-spacing:.22em; }
 .game-body { padding:24px; }
-.game-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; margin-top:26px; }
+.game-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; margin-top:26px; }
 .game-list > .game-card { aspect-ratio: 1 / 1; min-width: 0; display: flex; flex-direction: column; }
-.game-list .game-thumb { flex: 0 0 48%; min-height: 0; padding: 20px; }
+.game-list .game-thumb { flex: 0 0 46%; min-height: 0; padding: 16px; }
 .game-list .game-body { flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
 .game-list .game-body p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-bottom: 10px; }
 .game-list .chips { margin-bottom: 10px; }
 .game-list .game-detail-btn { align-self: flex-start; margin-top: auto; padding: 8px 10px; font-size: 12px; }
-.game-list .thumb-label { font-size:25px; }
-.game-list .game-body { padding:20px; }
-.game-list .game-body h3 { font-size:19px; }
+.game-list .thumb-label { font-size:23px; }
+.game-list .game-body { padding:16px; }
+.game-list .game-body h3 { font-size:17px; }
 .game-list .game-thumb::before { font-size:66px; right:18px; top:18px; }
 .game-thumb.sonicmania { background:radial-gradient(circle at 72% 25%,#25292D4a6 0 8%,transparent 9%),linear-gradient(145deg,#167fce,#e33b54 55%,#f2b52e); }
 .game-thumb.sonicmania::before { content:"🦔"; }
