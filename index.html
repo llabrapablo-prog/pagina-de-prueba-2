@@ -526,23 +526,86 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
     'bjOG8T4Kuwk'
   ];
   let current = 0;
-  let rotateTimer;
-  const showShort = index => {
-    current = (index + shorts.length) % shorts.length;
+  let player = null;
+  let pendingMuteState = null;
+  let pendingVolume = 100;
+  let apiReady = false;
+
+  const updateLinks = () => {
     const id = shorts[current];
-    screen.src = 'https://www.youtube-nocookie.com/embed/' + id +
-      '?autoplay=1&mute=1&controls=1&start=0&end=59&playsinline=1&rel=0';
     screen.title = 'Short de gameplay ' + (current + 1) + ' de ' + shorts.length + ' · 1DSAS3 Gaming';
     const likeLink = document.getElementById('short-like-link');
     if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
-    window.clearTimeout(rotateTimer);
-    rotateTimer = window.setTimeout(() => showShort((current + 1) % shorts.length), 12000);
   };
-  const prev = document.getElementById('short-prev');
+
+  const showShort = index => {
+    const wasPlaying = player && typeof player.getPlayerState === 'function'
+      ? player.getPlayerState() === YT.PlayerState.PLAYING : true;
+    if (player && typeof player.isMuted === 'function') {
+      pendingMuteState = player.isMuted();
+      pendingVolume = player.getVolume();
+    }
+    current = (index + shorts.length) % shorts.length;
+    updateLinks();
+    if (!player) return;
+    player.loadVideoById({ videoId: shorts[current], startSeconds: 0 });
+    // Reaplicar el estado de audio después de que el siguiente video comience.
+    // Así, si el visitante activó el sonido, no vuelve a quedar silenciado.
+    if (pendingMuteState === null) pendingMuteState = true;
+  };
+
+  const previous = document.getElementById('short-previous');
   const next = document.getElementById('short-next');
-  if (prev) prev.addEventListener('click', () => showShort(current - 1));
+  if (previous) previous.addEventListener('click', () => showShort(current - 1));
   if (next) next.addEventListener('click', () => showShort(current + 1));
-  showShort(0);
+
+  const initPlayer = () => {
+    if (apiReady || !window.YT || !window.YT.Player) return;
+    apiReady = true;
+    player = new YT.Player('gameplay-rotator', {
+      videoId: shorts[current],
+      playerVars: {
+        autoplay: 1, controls: 1, mute: 1, playsinline: 1,
+        rel: 0, enablejsapi: 1, origin: window.location.origin
+      },
+      events: {
+        onReady: event => {
+          player = event.target;
+          player.mute();
+          player.playVideo();
+          updateLinks();
+        },
+        onStateChange: event => {
+          if (event.data === YT.PlayerState.PLAYING && pendingMuteState !== null) {
+            const shouldMute = pendingMuteState;
+            const volume = pendingVolume;
+            pendingMuteState = null;
+            player.setVolume(typeof volume === 'number' ? volume : 100);
+            if (shouldMute) player.mute();
+            else player.unMute();
+          }
+          // Usar el evento real de fin, no un temporizador fijo:
+          // cada Short puede durar una cantidad de segundos diferente.
+          if (event.data === YT.PlayerState.ENDED) showShort(current + 1);
+        },
+        onError: () => {
+          // Si un Short no se puede reproducir, avanzar para no dejar el carrusel bloqueado.
+          window.setTimeout(() => showShort(current + 1), 2500);
+        }
+      }
+    });
+  };
+
+  window.onYouTubeIframeAPIReady = initPlayer;
+  if (window.YT && window.YT.Player) {
+    initPlayer();
+  } else {
+    const apiScript = document.createElement('script');
+    apiScript.src = 'https://www.youtube.com/iframe_api';
+    apiScript.async = true;
+    document.head.appendChild(apiScript);
+  }
+  updateLinks();
 })();
 </script>
 
