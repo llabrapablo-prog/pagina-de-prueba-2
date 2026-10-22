@@ -204,6 +204,32 @@ footer { border-top:1px solid #343B34; padding:26px 0 35px; color:#A7B0A0; font-
 .pagination .page-summary { width:100%; text-align:center; color:#B7C4AB; font-size:12px; margin-top:3px; }
 .game-list > .game-card[hidden] { display:none !important; }
 
+/* Catálogo en dos columnas con video persistente */
+.catalog-layout { display:grid; grid-template-columns:minmax(0,1fr) 285px; gap:30px; align-items:start; }
+.catalog-main { min-width:0; }
+.catalog-main .feature { grid-template-columns:1fr; }
+.catalog-main .game-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.catalog-video-sidebar { position:sticky; top:18px; align-self:start; min-width:0; z-index:5; }
+.catalog-video-sidebar .console-stage { min-height:0; display:block; }
+.catalog-video-sidebar .gameplay-wrap { width:100%; max-width:285px; margin:0 auto; }
+.catalog-video-sidebar .gameplay-screen { width:100%; }
+.catalog-video-sidebar .gameplay-actions { gap:7px; }
+.catalog-video-sidebar .gameplay-action { padding:10px 7px; font-size:11px; }
+.catalog-video-sidebar .gameplay-hint { font-size:10px; }
+@media (max-width: 900px) {
+  .catalog-layout { grid-template-columns:minmax(0,1fr) 245px; gap:20px; }
+  .catalog-video-sidebar .gameplay-wrap { max-width:245px; }
+}
+@media (max-width: 760px) {
+  .catalog-layout { grid-template-columns:1fr; }
+  .catalog-video-sidebar { position:relative; top:auto; width:min(320px,100%); margin:0 auto 28px; }
+  .catalog-video-sidebar .gameplay-wrap { max-width:320px; }
+  .catalog-main .game-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 500px) {
+  .catalog-main .game-list { grid-template-columns:1fr; }
+}
+
 /* Editor visual de elementos individuales */
 #visual-editor-launch{position:fixed;right:18px;bottom:18px;z-index:2000;border:1px solid #A6FF00;border-radius:14px;padding:13px 17px;background:#A6FF00;color:#111315;font:800 14px/1.2 Inter,system-ui,sans-serif;box-shadow:0 8px 28px #0008;cursor:pointer}
 #visual-editor-panel{position:fixed;right:18px;bottom:76px;z-index:2001;width:min(350px,calc(100vw - 36px));max-height:75vh;overflow:auto;padding:17px;border:1px solid #A6FF00;border-radius:16px;background:#171B1E;color:#F2F5EE;box-shadow:0 16px 45px #000b;display:none;font:14px/1.5 Inter,system-ui,sans-serif}
@@ -237,11 +263,15 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
           <p>Bienvenidos a 1DSAS3 Gaming: novedades, consolas retro, pruebas en R36S y clones, gameplays y una comunidad para compartir la pasión por los videojuegos.</p>
           <div class="actions"><a class="btn btn-primary" href="https://discord.gg/JUhuwp9xa" target="_blank" rel="noopener noreferrer">💬 Sumate al Discord</a><a class="btn btn-outline" href="#juegos">🎮 Explorar juegos</a></div>
         </div>
-        <div class="console-stage video-stage" aria-label="Video de gameplay del canal 1DSAS3 Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de 1DSAS3 Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><button class="short-nav-button previous" id="short-previous" type="button" aria-label="Video anterior" title="Video anterior">‹</button><button class="short-nav-button next" id="short-next" type="button" aria-label="Video siguiente" title="Video siguiente">›</button><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
+
       </div>
     </section>
     <section class="section" id="juegos">
-      <div class="wrap">
+      <div class="wrap catalog-layout">
+        <aside class="catalog-video-sidebar" aria-label="Video de gameplay fijo mientras recorrés los juegos">
+          <div class="console-stage video-stage" aria-label="Video de gameplay del canal 1DSAS3 Gaming"><div class="gameplay-wrap"><div class="gameplay-screen"><iframe id="gameplay-rotator" src="https://www.youtube-nocookie.com/embed/jZEHH0i2VqQ?autoplay=1&amp;mute=1&amp;controls=1&amp;start=0&amp;end=30&amp;playsinline=1&amp;rel=0" title="Shorts de gameplay de 1DSAS3 Gaming en rotación" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe><button class="short-nav-button previous" id="short-previous" type="button" aria-label="Video anterior" title="Video anterior">‹</button><button class="short-nav-button next" id="short-next" type="button" aria-label="Video siguiente" title="Video siguiente">›</button><span class="screen-caption">GAMEPLAY · UN DESASTRE GAMING</span></div><div class="gameplay-actions"><a id="short-like-link" href="https://www.youtube.com/shorts/jZEHH0i2VqQ" target="_blank" rel="noopener noreferrer" class="gameplay-action like-action">👍 Me gusta</a><a href="https://www.youtube.com/channel/UC3df3xTqYwnomS9FwvD1lwA?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="gameplay-action subscribe-action">🔔 Suscribirse</a></div><p class="gameplay-hint">Para dar Me gusta, abrí el Short en YouTube. El volumen se controla desde el reproductor.</p></div><div class="console-note">¡A jugar! 🎮</div></div>
+        </aside>
+        <div class="catalog-main">
         <div class="section-head"><div><div class="kicker">En portada</div><h2>Un juego para arrancar</h2></div><p>La idea es que cada juego tenga su propia ficha, información clara, imágenes y los enlaces de la comunidad en un solo lugar.</p></div>
         <div class="feature">
           <article class="game-card"><div class="game-thumb"><div class="thumb-label"><small>NEW SUPER</small>MARIO BROS. 2</div></div><div class="game-body"><h3>New Super Mario Bros. 2</h3><p>Una ficha de ejemplo para mostrar cómo se vería cada juego dentro de la web del canal, con su descripción y acceso a la comunidad.</p><div class="chips"><span class="chip">Plataformas</span><span class="chip">Nintendo 3DS</span><span class="chip warn">Compatibilidad R36S sin verificar</span></div><a class="btn btn-primary" href="https://llabrapablo-prog.github.io/pagina-de-prueba-2/" target="_blank" rel="noopener noreferrer">Ver ficha actual ↗</a></div></article>
