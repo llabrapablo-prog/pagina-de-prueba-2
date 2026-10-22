@@ -123,7 +123,7 @@ h2 { font-size:calc(clamp(28px,4vw,40px) * var(--site-heading-scale)); line-heig
 .thumb-label { color:white; font-weight:1000; font-size:34px; letter-spacing:-.07em; text-shadow:0 3px 0 #17356c; z-index:1; }
 .thumb-label small { display:block; font-size:11px; letter-spacing:.22em; }
 .game-body { padding:24px; }
-.game-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:26px; }
+.game-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; margin-top:26px; }
 .game-list .game-thumb { min-height:175px; padding:20px; }
 .game-list .thumb-label { font-size:25px; }
 .game-list .game-body { padding:20px; }
@@ -228,7 +228,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
 /* Reproductor flotante al recorrer la página: no modifica el ancho del catálogo */
 @media (min-width: 1100px) {
   body.catalog-player-floating .game-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     padding-right: 270px;
   }
   .gameplay-wrap.is-floating {
@@ -378,7 +378,7 @@ body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:
  if(!grid || !grid.classList.contains('game-list') || grid.id==='latest-games') return;
  const cards=[...grid.querySelectorAll(':scope > .game-card')], search=document.getElementById('catalog-search'), status=document.getElementById('catalog-status'), empty=document.getElementById('catalog-empty');
  const latestGrid=document.getElementById('latest-games'), latestPagination=document.getElementById('latest-pagination'), catalogPagination=document.getElementById('catalog-pagination');
- const pageSize=9, latestPageSize=4;
+ const pageSize=12, latestPageSize=4;
  cards.filter(card=>card.dataset.added).sort((a,b)=>b.dataset.added.localeCompare(a.dataset.added)).forEach(card=>latestGrid?.appendChild(card.cloneNode(true)));
  let genre='Todos', catalogPage=1, latestPage=1;
  const norm=value=>value.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
