@@ -204,20 +204,22 @@ footer { border-top:1px solid #343B34; padding:26px 0 35px; color:#A7B0A0; font-
 .pagination .page-summary { width:100%; text-align:center; color:#B7C4AB; font-size:12px; margin-top:3px; }
 .game-list > .game-card[hidden] { display:none !important; }
 
-/* Editor visual de prueba: los cambios de posición se guardan en este navegador. */
+/* Editor visual de elementos individuales */
 #visual-editor-launch{position:fixed;right:18px;bottom:18px;z-index:2000;border:1px solid #A6FF00;border-radius:14px;padding:13px 17px;background:#A6FF00;color:#111315;font:800 14px/1.2 Inter,system-ui,sans-serif;box-shadow:0 8px 28px #0008;cursor:pointer}
-#visual-editor-panel{position:fixed;right:18px;bottom:76px;z-index:2001;width:min(340px,calc(100vw - 36px));padding:17px;border:1px solid #A6FF00;border-radius:16px;background:#171B1E;color:#F2F5EE;box-shadow:0 16px 45px #000b;display:none;font:14px/1.5 Inter,system-ui,sans-serif}
+#visual-editor-panel{position:fixed;right:18px;bottom:76px;z-index:2001;width:min(350px,calc(100vw - 36px));max-height:75vh;overflow:auto;padding:17px;border:1px solid #A6FF00;border-radius:16px;background:#171B1E;color:#F2F5EE;box-shadow:0 16px 45px #000b;display:none;font:14px/1.5 Inter,system-ui,sans-serif}
 #visual-editor-panel.open{display:block}
 #visual-editor-panel strong{display:block;color:#A6FF00;font-size:16px;margin-bottom:6px}
-#visual-editor-panel p{margin:6px 0 12px;color:#c4ccbF}
+#visual-editor-panel p{margin:6px 0 12px;color:#c4ccbf}
 #visual-editor-panel .editor-actions{display:flex;flex-wrap:wrap;gap:8px}
 #visual-editor-panel button{border:1px solid #45513b;border-radius:9px;padding:9px 11px;background:#25292D;color:#F2F5EE;font:700 12px Inter,system-ui,sans-serif;cursor:pointer}
 #visual-editor-panel button.primary{background:#A6FF00;color:#111315;border-color:#A6FF00}
-body.visual-editor-active [data-visual-editable="true"]{outline:2px dashed #A6FF00;outline-offset:4px;cursor:grab!important;touch-action:none}
+#visual-editor-panel input[type=range]{width:100%;accent-color:#A6FF00}
+#visual-editor-panel label{display:block;margin:10px 0 4px;font-size:12px;color:#d8e0d1}
+body.visual-editor-active [data-visual-editable="true"]{outline:2px dashed #A6FF00;outline-offset:3px;cursor:grab!important;touch-action:none}
 body.visual-editor-active [data-visual-editable="true"]:hover{outline:3px solid #A6FF00}
 body.visual-editor-active [data-visual-editable="true"].editor-dragging{cursor:grabbing!important;z-index:1500;outline:3px solid #A6FF00;box-shadow:0 12px 30px #0008}
+body.visual-editor-active [data-visual-editable="true"].editor-selected{outline:3px solid #ff4d8d;outline-offset:4px}
 @media(max-width:600px){#visual-editor-launch{right:12px;bottom:12px}#visual-editor-panel{right:12px;bottom:68px}}
-
 </style>
 </head>
 <body>
@@ -422,19 +424,13 @@ body.visual-editor-active [data-visual-editable="true"].editor-dragging{cursor:g
     const likeLink = document.getElementById('short-like-link');
     if (likeLink) likeLink.href = 'https://www.youtube.com/shorts/' + id;
     window.clearTimeout(rotateTimer);
-    rotateTimer = window.setTimeout(() => showShort(current + 1), 59000);
-  };
-  document.getElementById('short-previous')?.addEventListener('click', () => showShort(current - 1));
-  document.getElementById('short-next')?.addEventListener('click', () => showShort(current + 1));
-  showShort(0);
-})();
-</script>
-
-
-<div id="visual-editor-panel" role="region" aria-label="Herramientas de edición visual">
-  <strong>✏️ Editor visual</strong>
-  <p>Arrastrá una sección o tarjeta marcada para moverla. Guardar conserva las posiciones en este navegador; no modifica automáticamente el sitio publicado para todos.</p>
-  <div class="editor-actions">
+    rotateTimer = window.setTimeout(() => sh<div id="visual-editor-panel" role="region" aria-label="Herramientas de edición visual">
+  <strong>✏️ Editor visual de elementos</strong>
+  <p>Seleccioná y arrastrá la pantalla de video, la portada, una imagen o una tarjeta. Elegí el tamaño con el control de abajo.</p>
+  <p id="visual-editor-selected" style="color:#A6FF00;font-weight:800">Elemento seleccionado: ninguno</p>
+  <label for="visual-editor-size">Tamaño del elemento: <span id="visual-editor-size-label">100%</span></label>
+  <input id="visual-editor-size" type="range" min="50" max="150" value="100" step="5">
+  <div class="editor-actions" style="margin-top:12px">
     <button type="button" class="primary" id="visual-editor-save">Guardar posiciones</button>
     <button type="button" id="visual-editor-reset">Restablecer</button>
     <button type="button" id="visual-editor-exit">Terminar edición</button>
@@ -444,65 +440,42 @@ body.visual-editor-active [data-visual-editable="true"].editor-dragging{cursor:g
 <button type="button" id="visual-editor-launch" aria-expanded="false">✏️ Editar página</button>
 <script>
 (() => {
-  const launch = document.getElementById('visual-editor-launch');
-  const panel = document.getElementById('visual-editor-panel');
-  const status = document.getElementById('visual-editor-status');
-  const save = document.getElementById('visual-editor-save');
-  const reset = document.getElementById('visual-editor-reset');
-  const exit = document.getElementById('visual-editor-exit');
-  const storageKey = '1dsas3-test-visual-layout-v1';
-  const editable = [...document.querySelectorAll('.nav, .hero, main > .section, footer, .discord, .game-card, .gameplay-wrap')];
-  editable.forEach((el, i) => { if (!el.dataset.visualEditId) el.dataset.visualEditId = 'item-' + i; });
-  function readLayout() {
-    try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch (_) { return {}; }
-  }
-  function applyLayout() {
-    const layout = readLayout();
-    editable.forEach(el => {
-      const pos = layout[el.dataset.visualEditId];
-      el.style.translate = pos ? pos.x + 'px ' + pos.y + 'px' : '';
-    });
-  }
-  function saveLayout() {
-    const layout = {};
-    editable.forEach(el => {
-      const match = (el.style.translate || '').match(/^(-?[\d.]+)px\s+(-?[\d.]+)px$/);
-      if (match && (Number(match[1]) || Number(match[2]))) layout[el.dataset.visualEditId] = {x:Number(match[1]),y:Number(match[2])};
-    });
-    try { localStorage.setItem(storageKey, JSON.stringify(layout)); status.textContent = 'Posiciones guardadas en este navegador.'; }
-    catch (_) { status.textContent = 'No se pudieron guardar. Revisá la configuración del navegador.'; }
-  }
-  function setMode(on) {
-    document.body.classList.toggle('visual-editor-active', on);
-    panel.classList.toggle('open', on);
-    launch.setAttribute('aria-expanded', String(on));
-    launch.textContent = on ? '✏️ Editor activo' : '✏️ Editar página';
-    editable.forEach(el => el.dataset.visualEditable = String(on));
-    status.textContent = on ? 'Arrastrá los elementos marcados. Después, guardá.' : 'Modo de edición cerrado.';
-  }
-  let drag = null;
-  editable.forEach(el => {
-    el.addEventListener('pointerdown', event => {
-      if (!document.body.classList.contains('visual-editor-active') || event.button !== 0) return;
-      if (event.target.closest('button,a,input,textarea,select')) return;
-      event.preventDefault();
-      const existing = (el.style.translate || '').match(/^(-?[\d.]+)px\s+(-?[\d.]+)px$/);
-      drag = {el, startX:event.clientX, startY:event.clientY, x:existing?Number(existing[1]):0, y:existing?Number(existing[2]):0};
-      el.classList.add('editor-dragging');
-      try { el.setPointerCapture(event.pointerId); } catch (_) {}
-    });
-    el.addEventListener('pointermove', event => {
-      if (!drag || drag.el !== el) return;
-      el.style.translate = (drag.x + event.clientX - drag.startX) + 'px ' + (drag.y + event.clientY - drag.startY) + 'px';
-    });
-    const finish = () => { if (drag && drag.el === el) { el.classList.remove('editor-dragging'); drag = null; } };
-    el.addEventListener('pointerup', finish);
-    el.addEventListener('pointercancel', finish);
-  });
-  launch.addEventListener('click', () => setMode(!document.body.classList.contains('visual-editor-active')));
-  save.addEventListener('click', saveLayout);
-  reset.addEventListener('click', () => {
-    try { localStorage.removeItem(storageKey); } catch (_) {}
+  const launch=document.getElementById('visual-editor-launch'), panel=document.getElementById('visual-editor-panel');
+  const status=document.getElementById('visual-editor-status'), selectedLabel=document.getElementById('visual-editor-selected');
+  const sizeInput=document.getElementById('visual-editor-size'), sizeLabel=document.getElementById('visual-editor-size-label');
+  const storageKey='1dsas3-test-visual-layout-v2';
+  const selector='.gameplay-wrap, .gameplay-screen, .game-art, .cover, .r36s-photo, .game-card, .game-thumb, .brand, .gameplay-actions, .gameplay-hint, .section-head, .discord, footer .footer-row';
+  const editable=[...document.querySelectorAll(selector)];
+  editable.forEach((el,i)=>{el.dataset.visualEditId='element-'+i;});
+  let selected=null, drag=null;
+  const parseTranslate=el=>{const m=(el.style.translate||'').match(/^(-?[\\d.]+)px\\s+(-?[\\d.]+)px$/);return m?{x:Number(m[1]),y:Number(m[2])}:{x:0,y:0};};
+  const parseScale=el=>{const m=(el.style.transform||'').match(/scale\\(([\\d.]+)\\)/);return m?Number(m[1]):1;};
+  function layout(){try{return JSON.parse(localStorage.getItem(storageKey)||'{}')}catch(_){return {}}}
+  function applyLayout(){const data=layout();editable.forEach(el=>{const p=data[el.dataset.visualEditId];el.style.translate=p?p.x+'px '+p.y+'px':'';el.style.transform=p&&p.scale?'scale('+p.scale+')':'';});}
+  function choose(el){if(selected)selected.classList.remove('editor-selected');selected=el;if(selected){selected.classList.add('editor-selected');selectedLabel.textContent='Elemento seleccionado: '+(el.getAttribute('aria-label')||el.querySelector('h3')?.textContent?.trim()||el.classList[0]||'elemento');sizeInput.value=Math.round(parseScale(el)*100);sizeLabel.textContent=sizeInput.value+'%';}else{selectedLabel.textContent='Elemento seleccionado: ninguno';}}
+  function saveLayout(){const data={};editable.forEach(el=>{const p=parseTranslate(el),scale=parseScale(el);if(p.x||p.y||scale!==1)data[el.dataset.visualEditId]={x:p.x,y:p.y,scale};});try{localStorage.setItem(storageKey,JSON.stringify(data));status.textContent='Cambios guardados en este navegador.';}catch(_){status.textContent='No se pudo guardar. Revisá la configuración del navegador.';}}
+  function setMode(on){document.body.classList.toggle('visual-editor-active',on);panel.classList.toggle('open',on);launch.setAttribute('aria-expanded',String(on));launch.textContent=on?'✏️ Editor activo':'✏️ Editar página';editable.forEach(el=>el.dataset.visualEditable=String(on));if(!on)choose(null);status.textContent=on?'Hacé clic en un elemento para seleccionarlo y arrastralo para moverlo.':'Modo de edición cerrado.';}
+  document.addEventListener('pointerdown',event=>{
+    if(!document.body.classList.contains('visual-editor-active'))return;
+    const el=event.target.closest('[data-visual-editable="true"]');
+    if(!el||event.target.closest('#visual-editor-panel,#visual-editor-launch,button,a,input,textarea,select'))return;
+    event.preventDefault();event.stopPropagation();choose(el);
+    const p=parseTranslate(el);drag={el,startX:event.clientX,startY:event.clientY,x:p.x,y:p.y,pointerId:event.pointerId};
+    el.classList.add('editor-dragging');try{el.setPointerCapture(event.pointerId)}catch(_){}
+  },true);
+  document.addEventListener('pointermove',event=>{if(!drag)return;drag.el.style.translate=(drag.x+event.clientX-drag.startX)+'px '+(drag.y+event.clientY-drag.startY)+'px';});
+  function finish(){if(drag){drag.el.classList.remove('editor-dragging');drag=null;}}
+  document.addEventListener('pointerup',finish);document.addEventListener('pointercancel',finish);
+  sizeInput.addEventListener('input',()=>{if(!selected)return;const scale=Number(sizeInput.value)/100;selected.style.transform=scale===1?'':'scale('+scale+')';sizeLabel.textContent=sizeInput.value+'%';});
+  launch.addEventListener('click',()=>setMode(!document.body.classList.contains('visual-editor-active')));
+  document.getElementById('visual-editor-save').addEventListener('click',saveLayout);
+  document.getElementById('visual-editor-reset').addEventListener('click',()=>{try{localStorage.removeItem(storageKey)}catch(_){}editable.forEach(el=>{el.style.translate='';el.style.transform='';});choose(null);status.textContent='Posiciones y tamaños restablecidos.';});
+  document.getElementById('visual-editor-exit').addEventListener('click',()=>setMode(false));
+  applyLayout();
+})();
+</script>
+
+   try { localStorage.removeItem(storageKey); } catch (_) {}
     editable.forEach(el => { el.style.translate = ''; });
     status.textContent = 'Posiciones restablecidas.';
   });
